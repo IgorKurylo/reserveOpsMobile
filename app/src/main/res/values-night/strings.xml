@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Reserve Ops</string>
+    <string name="searchRest">Search</string>
+    <string name="searchRestHint">Search Restaurant</string>
+    <string name="openAtRest">Open at %s-%s</string>
+    <string name="baseUrl">http://localhost:8080/app/api</string>
+    <string name="welcomeText">Welcome,</string>
+    <string name="lastRestaurant">Where visit</string>
+    <string name="moneySpend">Your Outgoing</string>
+    <string name="reserveTable">Reserve Table</string>
+    <string name="upcomingOrders">Upcoming Orders</string>
+    <string name="historyOrders">History Orders</string>
+    <string name="timeLabel">Time</string>
+</resources>
