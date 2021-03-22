@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.ops.R;
 import com.ops.models.Restaurant;
 import com.ops.utils.Constant;
@@ -51,7 +50,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.reserveTableBtn) {
-            Intent intent = new Intent(this, OrderActivity.class);
+            Intent intent = new Intent(this, ReserveActivity.class);
             Bundle bd = new Bundle();
             bd.putInt(Constant.RESTAURANT_ID, restaurant.getId());
             bd.putString(Constant.RESTAURANT_START_TIME, restaurant.getWorkTimeStart());

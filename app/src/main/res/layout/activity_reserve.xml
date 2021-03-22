@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.OrderActivity">
+    tools:context=".ui.ReserveActivity">
 
     <LinearLayout
         android:id="@+id/dateLayout"
@@ -42,7 +42,7 @@
                     android:fontFamily="@font/exo_regular"
                     android:gravity="center_vertical"
                     android:padding="5dp"
-                    android:id="@+id/orderDateTxt"
+                    android:id="@+id/reserveDateTxt"
                     android:text="Today, 20 Mar"
                     android:textColor="@color/colorLight"
                     android:textSize="@dimen/textDefaultSize"
@@ -124,7 +124,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/exo_regular"
                     android:text="2"
-                    android:id="@+id/orderGuestTxtView"
+                    android:id="@+id/reserveGuestTxtView"
                     android:textColor="@color/colorLight"
                     android:textSize="@dimen/textDefaultSize"
                     android:textStyle="bold" />
@@ -181,7 +181,7 @@
         android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/reserveBtn"
-        app:layout_constraintTop_toBottomOf="@+id/layoutTime">
+        >
 
         <TextView
             android:id="@+id/labelWishes"
@@ -193,13 +193,15 @@
             android:textSize="@dimen/textDefaultSize"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent" />
-
+<!--    TODO: edit test adjust on keyboard not-->
         <EditText
             android:id="@+id/wishesEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/grey_background"
             android:gravity="top"
+            android:padding="5dp"
+            android:textColor="@color/black"
             android:layout_marginTop="10dp"
             android:hint="@string/wishesEditText"
             android:lines="3" />

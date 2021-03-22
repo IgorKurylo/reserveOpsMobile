@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReserveOpsMobile">
-        <activity android:name=".ui.OrderActivity"></activity>
+        <activity
+            android:name=".ui.ReserveActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.RestaurantDetails" />
         <activity
             android:name=".ui.NavigationActivity"

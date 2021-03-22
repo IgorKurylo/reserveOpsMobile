@@ -69,15 +69,6 @@ public class RestaurantFragment extends Fragment implements CompoundButton.OnChe
 
     private ArrayList<Restaurant> mockRestaurant() {
         ArrayList<Restaurant> list = new ArrayList<>();
-        list.add(new Restaurant(1, "Fish & Ships",
-                RestaurantArea.HAIFA, "Haifa,Yaffo 53", "https://media-cdn.tripadvisor.com/media/photo-s/16/aa/e0/e3/traditional-fish-chips.jpg",
-                new ArrayList<>(), "08:00", "23:00", "049813210"));
-        list.add(new Restaurant(2, "Fish & Ships",
-                RestaurantArea.ASHDOD_ASHKELON, "Ashdod City", "https://media-cdn.tripadvisor.com/media/photo-s/16/aa/e0/e3/traditional-fish-chips.jpg",
-                new ArrayList<>(), "08:00", "23:00", "049811123"));
-        list.add(new Restaurant(3, "Fish & Ships",
-                RestaurantArea.TELAVIV, "TelAiv-Yaffo 53", "https://media-cdn.tripadvisor.com/media/photo-s/16/aa/e0/e3/traditional-fish-chips.jpg",
-                new ArrayList<>(), "10:00", "22:00", "049999111"));
         return list;
     }
 
