@@ -21,7 +21,7 @@ public class Restaurant implements Serializable {
     private List<RestaurantTables> restaurantTablesList;
     @SerializedName("StartTime")
     private String workTimeStart;
-    @SerializedName("StartTime")
+    @SerializedName("EndTime")
     private String workTimeEnd;
     @SerializedName("PhoneNumber")
     private String phoneNumber;

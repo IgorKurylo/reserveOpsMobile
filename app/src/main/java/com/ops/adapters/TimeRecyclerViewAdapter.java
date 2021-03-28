@@ -10,16 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ops.R;
+import com.ops.models.AvailableTime;
 
 import java.util.List;
 
 public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerViewAdapter.ViewHolder> {
 
-    List<String> timesList;
+    List<AvailableTime> timesList;
     private Context mContext;
     private int currentSelection = 0;
 
-    public TimeRecyclerViewAdapter(List<String> timesList, Context context) {
+    public TimeRecyclerViewAdapter(List<AvailableTime> timesList, Context context) {
         this.timesList = timesList;
         this.mContext = context;
     }
@@ -34,19 +35,29 @@ public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull TimeRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.timeTextView.setText(this.timesList.get(position));
-        holder.timeTextView.setSelected(currentSelection == position);
-        holder.timeTextView.setOnClickListener(v -> {
-            if (currentSelection != position) {
-                currentSelection = position;
-                notifyDataSetChanged();
-            }
-        });
+        if (this.timesList.get(position).isAvailable()) {
+            holder.timeTextView.setVisibility(View.INVISIBLE);
+        } else {
+            holder.timeTextView.setVisibility(View.VISIBLE);
+            holder.timeTextView.setText(this.timesList.get(position).getTime());
+            holder.timeTextView.setSelected(currentSelection == position);
+            holder.timeTextView.setOnClickListener(v -> {
+                if (currentSelection != position) {
+                    currentSelection = position;
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return this.timesList.size();
+    }
+
+    public void updateList(List<AvailableTime> availableTimeList) {
+        this.timesList = availableTimeList;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

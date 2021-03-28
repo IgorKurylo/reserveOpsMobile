@@ -44,4 +44,10 @@ public class UiUtils {
         SimpleDateFormat formatter = new SimpleDateFormat(Constant.TIME_FORMAT, Locale.getDefault());
         return formatter.parse(time);
     }
+
+    public static String getTodayDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
+        Calendar today = Calendar.getInstance();
+        return sdf.format(today.getTime());
+    }
 }

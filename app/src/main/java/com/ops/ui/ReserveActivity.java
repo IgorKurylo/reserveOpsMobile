@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,16 +17,26 @@ import android.widget.TextView;
 
 import com.ops.R;
 import com.ops.adapters.TimeRecyclerViewAdapter;
+import com.ops.models.AvailableTime;
+import com.ops.models.response.BaseResponse;
+import com.ops.models.response.TimeAvailabilityResponse;
+import com.ops.network.NetworkApi;
+import com.ops.network.services.IOrderService;
 import com.ops.utils.Constant;
 import com.ops.utils.UiUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReserveActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,7 +50,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     RecyclerView timePickerRecyclerView;
     final Calendar calendar = Calendar.getInstance();
     int todayDate;
-    String reserveDate;
+    String reserveDate, startTime, endTime;
     TimeRecyclerViewAdapter timeRecyclerViewAdapter;
 
     @Override
@@ -70,37 +81,74 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         datePickerLayout.setOnClickListener(this);
         upGuestLayout.setOnClickListener(this);
         downGuestLayout.setOnClickListener(this);
+        initAvailableTimeRv();
     }
 
     private void extractData(Intent intent) throws ParseException {
         if (intent.getExtras() != null) {
             Bundle bd = intent.getExtras();
-            String start = bd.getString(Constant.RESTAURANT_START_TIME);
-            String end = bd.getString(Constant.RESTAURANT_END_TIME);
-            Date startTime = UiUtils.convertTimeFromString(start);
-            Date endTime = UiUtils.convertTimeFromString(end);
-            initTimePickerRecyclerView(startTime, endTime);
+            int restaurantId = bd.getInt(Constant.RESTAURANT_ID);
+            startTime = bd.getString(Constant.RESTAURANT_START_TIME);
+            endTime = bd.getString(Constant.RESTAURANT_END_TIME);
+            String date = UiUtils.getTodayDate();
+            getAvailableTimes(restaurantId, date);
         }
     }
 
-    private void initTimePickerRecyclerView(Date start, Date end) {
-        List<String> timeList = new ArrayList<>();
+    private void getAvailableTimes(int restaurantId, String date) {
+        IOrderService service = NetworkApi.getInstance().getRetrofit().create(IOrderService.class);
+        service.availableTimes(restaurantId, date).enqueue(new Callback<BaseResponse<TimeAvailabilityResponse>>() {
+            @Override
+            public void onResponse(@NotNull Call<BaseResponse<TimeAvailabilityResponse>> call, @NotNull Response<BaseResponse<TimeAvailabilityResponse>> response) {
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        TimeAvailabilityResponse availabilityResponse = (TimeAvailabilityResponse) response.body().getData();
+                        if (availabilityResponse.getAvailableTimeList().size() > 0) {
+                            timeRecyclerViewAdapter.updateList(availabilityResponse.getAvailableTimeList());
+                        } else {
+                            buildAvailableTimes(startTime, endTime);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<BaseResponse<TimeAvailabilityResponse>> call, Throwable t) {
+                Log.e(ReserveActivity.class.getName(), t.toString());
+            }
+        });
+
+
+    }
+
+    private void buildAvailableTimes(String start, String end) {
+        List<AvailableTime> list = new ArrayList<>();
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
-        c1.setTime(start);
-        c2.setTime(end);
-        int startHour = c1.get(Calendar.HOUR_OF_DAY);
-        int endHour = c2.get(Calendar.HOUR_OF_DAY);
-        while (startHour <= endHour) {
-            timeList.add(startHour < 10 ?
-                    String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
-                    : String.format(Locale.getDefault(), "%d:00", startHour));
-            startHour++;
+        try {
+            java.util.Date startTime = UiUtils.convertTimeFromString(start);
+            java.util.Date endTime = UiUtils.convertTimeFromString(end);
+            c1.setTime(startTime);
+            c2.setTime(endTime);
+            int startHour = c1.get(Calendar.HOUR_OF_DAY);
+            int endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? 24 : c2.get(Calendar.HOUR_OF_DAY);
+            while (startHour <= endHour) {
+                list.add(new AvailableTime(startHour < 10 ?
+                        String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
+                        : String.format(Locale.getDefault(), "%d:00", startHour)
+                        , true));
+                startHour++;
+            }
+            timeRecyclerViewAdapter.updateList(list);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
-        timeRecyclerViewAdapter = new TimeRecyclerViewAdapter(timeList, this);
+    }
+
+    private void initAvailableTimeRv() {
+        timeRecyclerViewAdapter = new TimeRecyclerViewAdapter(new ArrayList<>(), this);
         timePickerRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         timePickerRecyclerView.setAdapter(timeRecyclerViewAdapter);
-
     }
 
     private void guestsPicker(int current, int direction) {

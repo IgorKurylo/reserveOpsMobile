@@ -3,6 +3,7 @@ package com.ops.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,9 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         reserveTableBtn = findViewById(R.id.reserveTableBtn);
         restaurantImage = findViewById(R.id.restaurantImageView);
         reserveTableBtn.setOnClickListener(this);
+        visitWebTxt.setOnClickListener(this);
+        showOnMapTxt.setOnClickListener(this);
+        callRestaurantTxt.setOnClickListener(this);
     }
 
     @Override
@@ -58,7 +62,22 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             intent.putExtras(bd);
             startActivity(intent);
             finish();
+        }
+        if (v.getId() == R.id.callRestTxtView) {
+            Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse(String.format("tel:%s", restaurant.getPhoneNumber())));
+            startActivity(call);
 
+        }
+        if (v.getId() == R.id.visitWebTxtView) {
+            Intent webSite = new Intent(Intent.ACTION_VIEW);
+            webSite.setData(Uri.parse(restaurant.getWebSite()));
+            startActivity(webSite);
+        }
+        if (v.getId() == R.id.showOnMapTxtView) {
+            Uri uri = Uri.parse(String.format("geo:0,0?q=%s", restaurant.getAddress()));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
         }
     }
 }

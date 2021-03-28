@@ -68,6 +68,11 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         return this.restaurantList.size();
     }
 
+    public void updateRestaurants(List<Restaurant> restaurantList) {
+        this.restaurantList = restaurantList;
+        notifyDataSetChanged();
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView restName, restAddress, restWorkingTime, restaurantAreaTxt;
