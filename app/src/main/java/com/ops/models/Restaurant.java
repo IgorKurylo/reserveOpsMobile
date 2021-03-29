@@ -41,6 +41,10 @@ public class Restaurant implements Serializable {
         this.webSite = webSite;
     }
 
+    public Restaurant(int id) {
+        Id = id;
+    }
+
     public int getId() {
         return Id;
     }

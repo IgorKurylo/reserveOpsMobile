@@ -1,9 +1,11 @@
 package com.ops.network.services;
 
 import com.ops.models.Reserve;
+import com.ops.models.request.RequestReserve;
 import com.ops.models.response.BaseResponse;
 import com.ops.models.response.ReserveResponse;
 import com.ops.models.response.ReservesResponse;
+import com.ops.models.response.TimeAvailabilityResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -14,12 +16,16 @@ import retrofit2.http.Query;
 
 public interface IReserveService {
 
-    @POST("/reserve")
-    Call<BaseResponse<ReserveResponse>> makeReserve(@Body Reserve reserve);
+    @POST("reserve")
+    Call<BaseResponse<ReserveResponse>> createReserve(@Body RequestReserve request);
 
-    @GET("/reserve/next")
+    @GET("reserve/next")
     Call<BaseResponse<ReserveResponse>> upComingReserve();
 
-    @GET("/reserve")
+    @GET("reserve")
     Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date);
+
+    @GET("reserve/availableTimes")
+    Call<BaseResponse<TimeAvailabilityResponse>> availableTimes(@Query("restaurantId") int restaurantId,
+                                                                @Query("date") String date);
 }

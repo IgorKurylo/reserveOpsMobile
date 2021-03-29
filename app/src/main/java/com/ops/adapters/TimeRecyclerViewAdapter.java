@@ -19,10 +19,15 @@ public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerVi
     List<AvailableTime> timesList;
     private Context mContext;
     private int currentSelection = 0;
+    private OnTimeSelectionListener timeSelectionListener;
 
     public TimeRecyclerViewAdapter(List<AvailableTime> timesList, Context context) {
         this.timesList = timesList;
         this.mContext = context;
+    }
+
+    public void setTimeSelectionListener(OnTimeSelectionListener timeSelectionListener) {
+        this.timeSelectionListener = timeSelectionListener;
     }
 
     @NonNull
@@ -45,6 +50,7 @@ public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerVi
                 if (currentSelection != position) {
                     currentSelection = position;
                     notifyDataSetChanged();
+                    timeSelectionListener.onTimeSelection(this.timesList.get(position).getTime());
                 }
             });
         }
@@ -67,5 +73,9 @@ public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerVi
             super(itemView);
             timeTextView = itemView.findViewById(R.id.time);
         }
+    }
+
+    public static interface OnTimeSelectionListener {
+        void onTimeSelection(String time);
     }
 }

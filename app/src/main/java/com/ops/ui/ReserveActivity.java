@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +19,14 @@ import android.widget.TextView;
 import com.ops.R;
 import com.ops.adapters.TimeRecyclerViewAdapter;
 import com.ops.models.AvailableTime;
+import com.ops.models.Reserve;
+import com.ops.models.Restaurant;
+import com.ops.models.request.RequestReserve;
 import com.ops.models.response.BaseResponse;
+import com.ops.models.response.ReserveResponse;
 import com.ops.models.response.TimeAvailabilityResponse;
 import com.ops.network.NetworkApi;
-import com.ops.network.services.IOrderService;
+import com.ops.network.services.IReserveService;
 import com.ops.utils.Constant;
 import com.ops.utils.UiUtils;
 
@@ -38,25 +43,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReserveActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReserveActivity extends AppCompatActivity implements View.OnClickListener, TimeRecyclerViewAdapter.OnTimeSelectionListener {
 
+    final String TAG = ReserveActivity.class.getName();
     final int MIN_GUESTS_NUMBER = 2;
     final int MAX_GUESTS_NUMBER = 10;
-    TextView reserveGuestTxtView, dateReserveTxtView;
+    TextView reserveGuestTxtView, dateReserveTxtView, timeLabel;
     RelativeLayout downGuestLayout, upGuestLayout, datePickerLayout;
-    TextView timeLabel;
     EditText wishesEditText;
     Button reserveBtn;
     RecyclerView timePickerRecyclerView;
     final Calendar calendar = Calendar.getInstance();
     int todayDate, restaurantId;
-    String reserveDate, startTime, endTime;
+    String reserveDate, startTime, endTime, reserveTime;
     TimeRecyclerViewAdapter timeRecyclerViewAdapter;
+    IReserveService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
+        service = NetworkApi.getInstance().getRetrofit().create(IReserveService.class);
         findViews();
         Intent intent = getIntent();
         try {
@@ -68,6 +75,9 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         reserveGuestTxtView.setText(String.valueOf(MIN_GUESTS_NUMBER));
     }
 
+    /**
+     * find views from layout
+     */
     private void findViews() {
         downGuestLayout = findViewById(R.id.downGuestLayout);
         upGuestLayout = findViewById(R.id.upGuestLayout);
@@ -81,9 +91,25 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         datePickerLayout.setOnClickListener(this);
         upGuestLayout.setOnClickListener(this);
         downGuestLayout.setOnClickListener(this);
+        reserveBtn.setOnClickListener(this);
         initAvailableTimeRv();
     }
 
+    /**
+     * init adapter of time available
+     */
+    private void initAvailableTimeRv() {
+        timeRecyclerViewAdapter = new TimeRecyclerViewAdapter(new ArrayList<>(), this);
+        timePickerRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        timePickerRecyclerView.setAdapter(timeRecyclerViewAdapter);
+        timeRecyclerViewAdapter.setTimeSelectionListener(this);
+    }
+
+    /**
+     * Get data from intent
+     * @param intent
+     * @throws ParseException
+     */
     private void extractData(Intent intent) throws ParseException {
         if (intent.getExtras() != null) {
 
@@ -95,8 +121,106 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * create list of times between start working and end working
+     * @param start
+     * @param end
+     */
+    private void buildAvailableTimes(String start, String end) {
+        List<AvailableTime> list = new ArrayList<>();
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try {
+            java.util.Date startTime = UiUtils.convertTimeFromString(start);
+            java.util.Date endTime = UiUtils.convertTimeFromString(end);
+            c1.setTime(startTime);
+            c2.setTime(endTime);
+            int startHour = c1.get(Calendar.HOUR_OF_DAY);
+            int endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? Constant.MIDNIGHT : c2.get(Calendar.HOUR_OF_DAY);
+            while (startHour < endHour) {
+                list.add(new AvailableTime(startHour < 10 ?
+                        String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
+                        : String.format(Locale.getDefault(), "%d:00", startHour)
+                        , true));
+                startHour++;
+            }
+            if (endHour == 24) {
+                list.add(new AvailableTime("00:00", true));
+            } else {
+                list.add(new AvailableTime(String.format(Locale.getDefault(), "%d:00", endHour), true));
+            }
+            timeRecyclerViewAdapter.updateList(list);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Picker on guest component
+     * @param current
+     * @param direction
+     */
+    private void guestsPicker(int current, int direction) {
+        if (direction > 0) {
+            if (current < MAX_GUESTS_NUMBER) {
+                reserveGuestTxtView.setText(String.valueOf(++current));
+            }
+        } else {
+            if (current > MIN_GUESTS_NUMBER) {
+                reserveGuestTxtView.setText(String.valueOf(--current));
+            }
+        }
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.upGuestLayout:
+                guestsPicker(Integer.parseInt(reserveGuestTxtView.getText().toString()), 1);
+                break;
+            case R.id.downGuestLayout:
+                guestsPicker(Integer.parseInt(reserveGuestTxtView.getText().toString()), -1);
+                break;
+            case R.id.datePickerLayout:
+                new DatePickerDialog(ReserveActivity.this, dateSetListener, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+            case R.id.reserveBtn:
+                Reserve reserve = new Reserve(reserveDate, reserveTime, new Restaurant(restaurantId), Integer.parseInt(reserveGuestTxtView.getText().toString()), wishesEditText.getText().toString());
+                createReserve(reserve);
+                break;
+        }
+    }
+
+    /**
+     * Send reserve to api
+     * @param reserve
+     */
+    private void createReserve(Reserve reserve) {
+        service.createReserve(new RequestReserve(reserve)).enqueue(new Callback<BaseResponse<ReserveResponse>>() {
+            @Override
+            public void onResponse(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Response<BaseResponse<ReserveResponse>> response) {
+                if (response.body() != null) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    /**
+     * @param restaurantId
+     * @param date
+     */
     private void getAvailableTimes(int restaurantId, String date) {
-        IOrderService service = NetworkApi.getInstance().getRetrofit().create(IOrderService.class);
+
         service.availableTimes(restaurantId, date).enqueue(new Callback<BaseResponse<TimeAvailabilityResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<TimeAvailabilityResponse>> call, @NotNull Response<BaseResponse<TimeAvailabilityResponse>> response) {
@@ -114,72 +238,16 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onFailure(@NotNull Call<BaseResponse<TimeAvailabilityResponse>> call, Throwable t) {
-                Log.e(ReserveActivity.class.getName(), t.toString());
+                Log.e(TAG, t.toString());
             }
         });
 
 
     }
 
-    private void buildAvailableTimes(String start, String end) {
-        List<AvailableTime> list = new ArrayList<>();
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        try {
-            java.util.Date startTime = UiUtils.convertTimeFromString(start);
-            java.util.Date endTime = UiUtils.convertTimeFromString(end);
-            c1.setTime(startTime);
-            c2.setTime(endTime);
-            int startHour = c1.get(Calendar.HOUR_OF_DAY);
-            int endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? 24 : c2.get(Calendar.HOUR_OF_DAY);
-            while (startHour <= endHour) {
-                list.add(new AvailableTime(startHour < 10 ?
-                        String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
-                        : String.format(Locale.getDefault(), "%d:00", startHour)
-                        , true));
-                startHour++;
-            }
-            timeRecyclerViewAdapter.updateList(list);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void initAvailableTimeRv() {
-        timeRecyclerViewAdapter = new TimeRecyclerViewAdapter(new ArrayList<>(), this);
-        timePickerRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        timePickerRecyclerView.setAdapter(timeRecyclerViewAdapter);
-    }
-
-    private void guestsPicker(int current, int direction) {
-        if (direction > 0) {
-            if (current < MAX_GUESTS_NUMBER) {
-                reserveGuestTxtView.setText(String.valueOf(++current));
-            }
-        } else {
-            if (current > MIN_GUESTS_NUMBER) {
-                reserveGuestTxtView.setText(String.valueOf(--current));
-            }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.upGuestLayout:
-                guestsPicker(Integer.parseInt(reserveGuestTxtView.getText().toString()), 1);
-                break;
-            case R.id.downGuestLayout:
-                guestsPicker(Integer.parseInt(reserveGuestTxtView.getText().toString()), -1);
-                break;
-            case R.id.datePickerLayout:
-                new DatePickerDialog(ReserveActivity.this, dateSetListener, calendar
-                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
-                break;
-        }
-    }
-
+    /**
+     *
+     */
     private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -194,4 +262,9 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
         }
     };
+
+    @Override
+    public void onTimeSelection(String time) {
+        reserveTime = time;
+    }
 }

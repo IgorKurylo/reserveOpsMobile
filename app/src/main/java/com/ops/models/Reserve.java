@@ -26,6 +26,14 @@ public class Reserve {
         this.wishes = wishes;
     }
 
+    public Reserve(String date, String time, Restaurant restaurant, int guestsNumber, String wishes) {
+        this.date = date;
+        this.time = time;
+        this.restaurant = restaurant;
+        this.guestsNumber = guestsNumber;
+        this.wishes = wishes;
+    }
+
     public int getId() {
         return Id;
     }
