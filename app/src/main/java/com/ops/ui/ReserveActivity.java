@@ -49,7 +49,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     Button reserveBtn;
     RecyclerView timePickerRecyclerView;
     final Calendar calendar = Calendar.getInstance();
-    int todayDate;
+    int todayDate, restaurantId;
     String reserveDate, startTime, endTime;
     TimeRecyclerViewAdapter timeRecyclerViewAdapter;
 
@@ -86,10 +86,10 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     private void extractData(Intent intent) throws ParseException {
         if (intent.getExtras() != null) {
-            Bundle bd = intent.getExtras();
-            int restaurantId = bd.getInt(Constant.RESTAURANT_ID);
-            startTime = bd.getString(Constant.RESTAURANT_START_TIME);
-            endTime = bd.getString(Constant.RESTAURANT_END_TIME);
+
+            restaurantId = intent.getIntExtra(Constant.RESTAURANT_ID, 0);
+            startTime = intent.getStringExtra(Constant.RESTAURANT_START_TIME);
+            endTime = intent.getStringExtra(Constant.RESTAURANT_END_TIME);
             String date = UiUtils.getTodayDate();
             getAvailableTimes(restaurantId, date);
         }
@@ -190,6 +190,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
             SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
             calendar.set(year, month, dayOfMonth);
             reserveDate = sdf.format(calendar.getTime());
+            getAvailableTimes(restaurantId, reserveDate);
 
         }
     };

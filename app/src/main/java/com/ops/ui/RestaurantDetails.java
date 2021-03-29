@@ -55,11 +55,9 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         if (v.getId() == R.id.reserveTableBtn) {
             Intent intent = new Intent(this, ReserveActivity.class);
-            Bundle bd = new Bundle();
-            bd.putInt(Constant.RESTAURANT_ID, restaurant.getId());
-            bd.putString(Constant.RESTAURANT_START_TIME, restaurant.getWorkTimeStart());
-            bd.putString(Constant.RESTAURANT_END_TIME, restaurant.getWorkTimeEnd());
-            intent.putExtras(bd);
+            intent.putExtra(Constant.RESTAURANT_ID, restaurant.getId());
+            intent.putExtra(Constant.RESTAURANT_START_TIME, restaurant.getWorkTimeStart());
+            intent.putExtra(Constant.RESTAURANT_END_TIME, restaurant.getWorkTimeEnd());
             startActivity(intent);
             finish();
         }

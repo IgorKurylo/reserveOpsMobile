@@ -35,7 +35,7 @@ public class TimeRecyclerViewAdapter extends RecyclerView.Adapter<TimeRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull TimeRecyclerViewAdapter.ViewHolder holder, int position) {
-        if (this.timesList.get(position).isAvailable()) {
+        if (!this.timesList.get(position).isAvailable()) {
             holder.timeTextView.setVisibility(View.INVISIBLE);
         } else {
             holder.timeTextView.setVisibility(View.VISIBLE);
