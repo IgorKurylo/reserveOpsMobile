@@ -34,5 +34,11 @@
     <string name="loginTitleActivity">Enter your Phone Number</string>
     <string name="loginTitleActivity2">We will send you the 4 digits verification code</string>
 
+    <string name="register">New user? <font color="#b71c1c">Register</font></string>
+    <string name="registerBtn">Register</string>
     <string name="phoneNumberHint">XXX-XXXXXXX</string>
+    <string name="firstNameHint">First Name</string>
+    <string name="lastNameHint">Last Name</string>
+    <string name="phoneHint">Phone Number</string>
+
 </resources>

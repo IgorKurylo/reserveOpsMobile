@@ -1,21 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Reserve Ops</string>
     <string name="searchRest">Search</string>
     <string name="searchRestHint">Search Restaurant</string>
     <string name="openAtRest">Open at %s-%s</string>
     <string name="baseUrl">http://10.0.2.2:8080/app/api/</string>
+    <string name="title_activity_navigation">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_restaurant">Restaurant</string>
+    <string name="title_notifications">Reservation</string>
     <string name="welcomeText">Welcome,</string>
-    <string name="lastRestaurant">Where visit</string>
+    <string name="userLastReserve">Your Reserves</string>
+    <string name="visitsOnRestaurant">Your Visits</string>
+    <string name="lastRestaurant">Last Visit In </string>
     <string name="moneySpend">Your Outgoing</string>
-    <string name="reserveTable">Reserve Table</string>
-    <string name="upcomingOrders">Upcoming Orders</string>
-    <string name="historyOrders">History Orders</string>
+    <string name="reserveTable">Reserve a table</string>
+    <string name="callRestaurant">Call\nrestaurant</string>
+    <string name="webSite">View\nwebsite</string>
+    <string name="goToMaps">Show\non map</string>
+    <string name="upcomingOrders">Upcoming Reservation</string>
+    <string name="historyOrders">My Reservations</string>
+    <string name="dateLabel">Date</string>
+    <string name="guestLabel">Guests</string>
     <string name="timeLabel">Time</string>
+    <string name="wishesEditText">Enter wishes</string>
+    <string name="wishesLabel">Wishes</string>
+    <string name="reserveBtnTxt">Reserve</string>
     <string name="tableReservation">Table Reservation</string>
-    <string name="reservationComplete">Reservation Complete!</string>
+    <string name="reservationComplete">Reservation Completed!</string>
     <string name="reservationInfo">Reservation Info</string>
     <string name="userFullNameLbl">Name</string>
-    <string name="reservationCompleteOK">Ok</string>
+    <string name="reservationCompleteOK">OK</string>
     <string name="loginLbl">Log In</string>
+    <string name="loginTitleActivity">Enter your Phone Number</string>
+    <string name="loginTitleActivity2">We will send you the 4 digits verification code</string>
+
+    <string name="phoneNumberHint">XXX-XXXXXXX</string>
+    <string name="register">New user? <font color="#b71c1c">Register</font></string>
+    <string name="registerBtn">Register</string>
 </resources>
