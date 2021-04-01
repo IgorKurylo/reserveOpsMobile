@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ops.R;
 
 
-public class NotificationsFragment extends Fragment {
+public class ReservationFragment extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,

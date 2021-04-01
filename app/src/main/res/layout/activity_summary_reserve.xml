@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ui.SummaryReserveActivity">
+
+    <ImageView
+        android:id="@+id/reservationCompleteImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_checked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/reservationCompleteTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/exo_regular"
+        android:gravity="center"
+        android:text="@string/reservationComplete"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textBigSize"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reservationCompleteImg" />
+
+    <LinearLayout
+        android:id="@+id/reservationDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/reservationCompleteTxt">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_regular"
+            android:text="@string/reservationInfo"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textDefaultSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reservationInfo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/exo_regular"
+            android:text="@string/reservationInfo"
+            android:textColor="@color/colorLight"
+            android:textSize="@dimen/textDefaultSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reservationInfo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/exo_regular"
+            android:text="@string/reservationInfo"
+            android:textColor="@color/colorLight"
+            android:textSize="@dimen/textDefaultSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userFullNameLbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/exo_regular"
+            android:text="@string/userFullNameLbl"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textDefaultSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userFullNameInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/exo_regular"
+            android:text="John Doe"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textDefaultSize"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/reserveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/reservationCompleteOK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

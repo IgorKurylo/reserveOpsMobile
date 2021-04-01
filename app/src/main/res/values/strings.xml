@@ -7,7 +7,7 @@
     <string name="title_activity_navigation">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_restaurant">Restaurant</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Reservation</string>
     <string name="welcomeText">Welcome,</string>
     <string name="userLastReserve">Your Reserves</string>
     <string name="visitsOnRestaurant">Your Visits</string>
@@ -17,12 +17,22 @@
     <string name="callRestaurant">Call\nrestaurant</string>
     <string name="webSite">View\nwebsite</string>
     <string name="goToMaps">Show\non map</string>
-    <string name="upcomingOrders">Upcoming\nOrder</string>
-    <string name="historyOrders">History Orders</string>
+    <string name="upcomingOrders">Upcoming Reservation</string>
+    <string name="historyOrders">My Reservations</string>
     <string name="dateLabel">Date</string>
     <string name="guestLabel">Guests</string>
     <string name="timeLabel">Time</string>
     <string name="wishesEditText">Enter wishes</string>
     <string name="wishesLabel">Wishes</string>
     <string name="reserveBtnTxt">Reserve</string>
+    <string name="tableReservation">Table Reservation</string>
+    <string name="reservationComplete">Reservation Completed!</string>
+    <string name="reservationInfo">Reservation Info</string>
+    <string name="userFullNameLbl">Name</string>
+    <string name="reservationCompleteOK">OK</string>
+    <string name="loginLbl">Log In</string>
+    <string name="loginTitleActivity">Enter your Phone Number</string>
+    <string name="loginTitleActivity2">We will send you the 4 digits verification code</string>
+
+    <string name="phoneNumberHint">XXX-XXXXXXX</string>
 </resources>

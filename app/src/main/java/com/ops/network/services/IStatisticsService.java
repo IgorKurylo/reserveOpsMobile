@@ -9,5 +9,5 @@ import retrofit2.http.Query;
 
 public interface IStatisticsService {
     @GET("statistics")
-    Call<BaseResponse<StatisticsResponse>> statistics(@Query("date") String date);
+    Call<BaseResponse<StatisticsResponse>> statistics();
 }

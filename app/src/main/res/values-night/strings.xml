@@ -12,4 +12,10 @@
     <string name="upcomingOrders">Upcoming Orders</string>
     <string name="historyOrders">History Orders</string>
     <string name="timeLabel">Time</string>
+    <string name="tableReservation">Table Reservation</string>
+    <string name="reservationComplete">Reservation Complete!</string>
+    <string name="reservationInfo">Reservation Info</string>
+    <string name="userFullNameLbl">Name</string>
+    <string name="reservationCompleteOK">Ok</string>
+    <string name="loginLbl">Log In</string>
 </resources>

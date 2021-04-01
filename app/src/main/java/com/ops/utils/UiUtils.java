@@ -20,9 +20,7 @@ public class UiUtils {
     public static String randomAvatar(Context context) {
         int max = 10, min = 1;
         int randomNumber = new Random().nextInt((max - min) + 1) + min;
-        String path = String.format("//assets/users/%s.png", "" + randomNumber);
-        Uri imageUri = Uri.fromFile(new File(String.format(path, randomNumber)));
-        return imageUri.getPath();
+        return String.format("file:///android_asset/users/%s.png", "" + randomNumber);
     }
 
     public static String getMonthName(int month) {
@@ -49,5 +47,19 @@ public class UiUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
         Calendar today = Calendar.getInstance();
         return sdf.format(today.getTime());
+    }
+
+    public static String formatDate(String date) throws ParseException {
+        String resultDate = "";
+        SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
+
+        Date dInstance = sdf.parse(date);
+        if (dInstance != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dInstance);
+            resultDate = String.format(Locale.getDefault(), "%d,%s", calendar.get(Calendar.DAY_OF_MONTH), getMonthName(calendar.get(Calendar.MONTH)));
+        }
+        return resultDate;
+
     }
 }

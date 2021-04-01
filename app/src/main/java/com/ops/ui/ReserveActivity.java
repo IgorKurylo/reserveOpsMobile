@@ -93,6 +93,9 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         downGuestLayout.setOnClickListener(this);
         reserveBtn.setOnClickListener(this);
         initAvailableTimeRv();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.tableReservation));
+        }
     }
 
     /**
@@ -107,6 +110,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Get data from intent
+     *
      * @param intent
      * @throws ParseException
      */
@@ -123,6 +127,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * create list of times between start working and end working
+     *
      * @param start
      * @param end
      */
@@ -158,6 +163,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Picker on guest component
+     *
      * @param current
      * @param direction
      */
@@ -184,9 +190,13 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
                 guestsPicker(Integer.parseInt(reserveGuestTxtView.getText().toString()), -1);
                 break;
             case R.id.datePickerLayout:
-                new DatePickerDialog(ReserveActivity.this, dateSetListener, calendar
+                Calendar minDate = Calendar.getInstance();
+                minDate.add(Calendar.DATE, -1);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ReserveActivity.this, dateSetListener, calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+                datePickerDialog.show();
                 break;
             case R.id.reserveBtn:
                 Reserve reserve = new Reserve(reserveDate, reserveTime, new Restaurant(restaurantId), Integer.parseInt(reserveGuestTxtView.getText().toString()), wishesEditText.getText().toString());
@@ -197,6 +207,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Send reserve to api
+     *
      * @param reserve
      */
     private void createReserve(Reserve reserve) {
@@ -246,7 +257,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     *
+     * Date picker listener
      */
     private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -265,6 +276,6 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onTimeSelection(String time) {
-        reserveTime = time;
+        reserveTime = String.format("%s:00", time);
     }
 }

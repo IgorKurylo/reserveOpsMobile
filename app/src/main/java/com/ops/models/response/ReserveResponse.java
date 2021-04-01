@@ -1,21 +1,22 @@
 package com.ops.models.response;
 
 import com.google.gson.annotations.SerializedName;
+import com.ops.models.Reserve;
 
 public class ReserveResponse {
 
-    @SerializedName("Id")
-    private int OrderId;
+    @SerializedName("reserve")
+    private Reserve reserve;
 
-    public ReserveResponse(int orderId) {
-        OrderId = orderId;
+    public ReserveResponse(Reserve reserve) {
+        this.reserve = reserve;
     }
 
-    public int getOrderId() {
-        return OrderId;
+    public Reserve getReserve() {
+        return reserve;
     }
 
-    public void setOrderId(int orderId) {
-        OrderId = orderId;
+    public void setReserve(Reserve reserve) {
+        this.reserve = reserve;
     }
 }
