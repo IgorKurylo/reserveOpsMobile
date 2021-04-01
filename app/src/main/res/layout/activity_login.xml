@@ -59,7 +59,7 @@
             android:gravity="center"
             android:padding="5dp"
             app:drawableTint="@color/white"
-            android:src="@drawable/ic_baseline_local_phone_24"/>
+            android:src="@drawable/ic_phone"/>
         <EditText
             android:id="@+id/phoneNumberEditText"
             android:layout_width="match_parent"

@@ -37,4 +37,6 @@
     <string name="phoneNumberHint">XXX-XXXXXXX</string>
     <string name="register">New user? <font color="#b71c1c">Register</font></string>
     <string name="registerBtn">Register</string>
+    <string name="registerTitle">Register</string>
+    <string name="registerCompleted">Register Completed!</string>
 </resources>

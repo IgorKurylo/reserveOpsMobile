@@ -40,5 +40,7 @@
     <string name="firstNameHint">First Name</string>
     <string name="lastNameHint">Last Name</string>
     <string name="phoneHint">Phone Number</string>
+    <string name="registerTitle">Register</string>
+    <string name="registerCompleted">Register Completed!</string>
 
 </resources>
