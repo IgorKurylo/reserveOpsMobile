@@ -8,7 +8,7 @@
     <string name="title_home">Home</string>
     <string name="title_restaurant">Restaurant</string>
     <string name="title_notifications">Reservation</string>
-    <string name="welcomeText">Welcome,</string>
+    <string name="welcomeText">Welcome,%1$s</string>
     <string name="userLastReserve">Your Reserves</string>
     <string name="visitsOnRestaurant">Your Visits</string>
     <string name="lastRestaurant">Last Visit In </string>
@@ -42,5 +42,7 @@
     <string name="phoneHint">Phone Number</string>
     <string name="registerTitle">Register</string>
     <string name="registerCompleted">Register Completed!</string>
+    <string name="errorRegister">Error on registration,Try again</string>
+    <string name="shared_preference_file_key">cache_ops</string>
 
 </resources>

@@ -7,10 +7,26 @@ public class AccessToken {
     String accessToken;
     @SerializedName("role")
     String role;
+    @SerializedName("user")
+    User user;
+
+    public AccessToken(String accessToken, String role, User user) {
+        this.accessToken = accessToken;
+        this.role = role;
+        this.user = user;
+    }
 
     public AccessToken(String accessToken, String role) {
         this.accessToken = accessToken;
         this.role = role;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAccessToken() {
@@ -28,4 +44,5 @@ public class AccessToken {
     public void setRole(String role) {
         this.role = role;
     }
+
 }

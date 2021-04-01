@@ -1,102 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    >
-   <TextView
-       android:layout_width="match_parent"
-       android:text="@string/registerTitle"
-       android:textColor="@color/black"
-       android:textSize="@dimen/textBigSize"
-       android:textStyle="bold"
-       android:layout_marginTop="20dp"
-       app:layout_constraintTop_toTopOf="parent"
-       android:padding="10dp"
-       android:id="@+id/registerLbl"
-       android:layout_gravity="center_vertical"
-       android:gravity="center"
-       android:fontFamily="@font/exo_regular"
-       android:layout_height="wrap_content"/>
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/registerLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/exo_regular"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/registerTitle"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textBigSize"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
+        android:id="@+id/registerImg"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_register"
-        android:id="@+id/registerImg"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerLbl"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerLbl" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
         android:id="@+id/layoutFields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/registerImg"
-        android:layout_height="wrap_content">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/registerImg">
+
         <EditText
             android:id="@+id/firstName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/grey_background"
-            android:padding="5dp"
-            android:imeOptions="actionNext"
             android:layout_margin="10dp"
-            android:inputType="text"
-            android:textColor="@color/black"
+            android:background="@drawable/grey_background"
             android:hint="@string/firstNameHint"
-            />
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textColor="@color/black" />
+
         <EditText
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/grey_background"
-            android:padding="5dp"
-            android:imeOptions="actionNext"
             android:layout_margin="10dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:inputType="text"
-            android:textColor="@color/black"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/grey_background"
             android:hint="@string/lastNameHint"
-            />
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textColor="@color/black" />
+
         <EditText
             android:id="@+id/phoneNumberEditTextReg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/grey_background"
-            android:padding="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:inputType="phone"
-            android:textColor="@color/black"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/grey_background"
             android:hint="@string/phoneHint"
-            />
+            android:inputType="phone"
+            android:padding="5dp"
+            android:textColor="@color/black" />
     </LinearLayout>
+
     <ProgressBar
+        android:id="@+id/progressBarReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/progressBar"
+        android:layout_marginTop="10dp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/layoutFields"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutFields" />
+
     <Button
+        android:id="@+id/registerBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:paddingEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:paddingStart="10dp"
-        android:id="@+id/registerBtn"
+        android:paddingEnd="10dp"
         android:text="@string/registerBtn"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBarReg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

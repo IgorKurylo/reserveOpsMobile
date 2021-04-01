@@ -18,6 +18,7 @@ import com.ops.models.response.BaseResponse;
 import com.ops.models.response.StatisticsResponse;
 import com.ops.network.NetworkApi;
 import com.ops.network.services.IStatisticsService;
+import com.ops.utils.CacheManager;
 import com.ops.utils.Constant;
 import com.ops.utils.UiUtils;
 import com.squareup.picasso.Picasso;
@@ -53,12 +54,18 @@ public class HomeFragment extends Fragment {
         timeUpcomingReserveTxt = view.findViewById(R.id.timeUpcomingReserveTxt);
         restaurantNameUpcomingReserveTxt = view.findViewById(R.id.restaurantNameUpcomingReserveTxt);
         guestNumberUpcomingReserve = view.findViewById(R.id.guestNumberUpcomingReserve);
-        String imageUrl = UiUtils.randomAvatar(view.getContext());
-        userAvatar.setImageResource(0);
-        Picasso.get().load(imageUrl)
-                .into(userAvatar);
+        TextView welcomeTxt = view.findViewById(R.id.welcomeText);
+        loadUserDetails(welcomeTxt);
         loadStatistics();
         return view;
+    }
+
+    private void loadUserDetails(TextView welcomeTxt) {
+        String imageUrl = CacheManager.getInstance().getString(Constant.AVATAR);
+        Picasso.get().load(imageUrl)
+                .error(R.drawable.ic_user)
+                .into(userAvatar);
+        welcomeTxt.setText(getString(R.string.welcomeText, CacheManager.getInstance().getString(Constant.FIRST_NAME)));
     }
 
     private void loadStatistics() {
@@ -96,17 +103,4 @@ public class HomeFragment extends Fragment {
         guestNumberUpcomingReserve.setText(String.format(Locale.getDefault(), "%d %s", result.getReserve().getGuestsNumber(), view.getContext().getString(R.string.guestLabel)));
     }
 
-
-//    private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-//        @Override
-//        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//            String dayText = dayOfMonth == todayDate ? "Today" : dayOfMonth < todayDate ? "Yesterday" : "";
-//            String monthDisplayTxt = UiUtils.getMonthName(month + 1);
-//            String chooseDate = String.format(Locale.getDefault(), "%s, %d %s", dayText, dayOfMonth, monthDisplayTxt);
-//            dateTxt.setText(chooseDate);
-//            SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
-//            calendar.set(year, month, dayOfMonth);
-//            filterDate = sdf.format(calendar.getTime());
-//        }
-//    };
 }
