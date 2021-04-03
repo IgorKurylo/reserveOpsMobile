@@ -51,6 +51,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         registerTxtView.setOnClickListener(this);
         logInBtn.setOnClickListener(this);
         service = NetworkApi.getInstance().getRetrofit().create(IAuthService.class);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.loginLbl);
+        }
     }
 
     @Override
@@ -128,10 +131,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         CacheManager.getInstance().setString(Constant.ACCESS_TOKEN, token.getAccessToken());
                         CacheManager.getInstance().setString(Constant.ROLE, token.getRole());
                         CacheManager.getInstance().setString(Constant.FIRST_NAME, token.getUser().getFirstName());
-                        CacheManager.getInstance().setString(Constant.AVATAR,UiUtils.randomAvatar(getApplicationContext()));
+                        if (CacheManager.getInstance().getString(Constant.AVATAR).isEmpty()) {
+                            CacheManager.getInstance().setString(Constant.AVATAR, UiUtils.randomAvatar(getApplicationContext()));
+                        }
                         Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                         startActivity(intent);
                         finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
             }

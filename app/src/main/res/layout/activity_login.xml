@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     tools:context=".ui.LoginActivity">
 
     <LinearLayout
@@ -48,23 +49,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/phoneNumberLayout"
-        android:padding="10dp"
-        android:layout_marginTop="30dp"
+        android:padding="15dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@+id/backgroundLayout"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/colorLight"
             android:gravity="center"
             android:padding="5dp"
-            app:drawableTint="@color/white"
-            android:src="@drawable/ic_phone"/>
+            android:src="@drawable/ic_phone_selector"/>
         <EditText
             android:id="@+id/phoneNumberEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/grey_background"
+            android:background="@drawable/custom_edit_text"
             android:padding="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"

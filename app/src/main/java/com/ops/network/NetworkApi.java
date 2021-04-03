@@ -35,7 +35,7 @@ public class NetworkApi {
 
     private OkHttpClient httpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.authenticator(new TokenAuthenticator(mContext));
+        builder.authenticator(new TokenAuthenticator());
         builder.retryOnConnectionFailure(true);
         return builder.build();
     }

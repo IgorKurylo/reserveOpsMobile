@@ -15,8 +15,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ops.R;
 import com.ops.models.Restaurant;
+import com.ops.utils.Constant;
+import com.ops.utils.UiUtils;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantRecyclerViewAdapter.ViewHolder> {
@@ -51,9 +56,16 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         holder.restaurantAreaTxt.setText(restaurant.getArea());
         holder.restWorkingTime.setText(String.format(mContext.getString(R.string.openAtRest),
                 restaurant.getWorkTimeStart(), restaurant.getWorkTimeEnd()));
+        try {
+            setOpenCloseStatus(holder, restaurant);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Glide.with(mContext)
                 .load(restaurant.getImageUrl())
                 .apply(new RequestOptions().circleCrop())
+                .error(R.drawable.ic_restaurant)
                 .into(holder.restImageView);
         holder.restItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +73,27 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
                 listener.OnChooseRestaurant(restaurant);
             }
         });
+    }
+
+    private void setOpenCloseStatus(@NonNull ViewHolder holder, Restaurant restaurant) throws ParseException {
+        Date startTime = UiUtils.convertTimeFromString(restaurant.getWorkTimeStart());
+        Date endTime = UiUtils.convertTimeFromString(restaurant.getWorkTimeEnd());
+        Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+        start.setTime(startTime);
+        end.setTime(endTime);
+        int nowHour = now.get(Calendar.HOUR_OF_DAY);
+        int startHour = start.get(Calendar.HOUR_OF_DAY);
+        int endHour = end.get(Calendar.HOUR_OF_DAY) == 0 ? Constant.MIDNIGHT : end.get(Calendar.HOUR_OF_DAY);
+        if (startHour <= nowHour && nowHour <= endHour) {
+            holder.restaurantOpenStatus.setText(mContext.getString(R.string.open));
+            holder.restaurantOpenStatus.setTextColor(mContext.getColor(R.color.green));
+        } else {
+            holder.restaurantOpenStatus.setText(mContext.getString(R.string.close));
+            holder.restaurantOpenStatus.setTextColor(mContext.getColor(R.color.colorPrimary));
+        }
+
     }
 
     @Override
@@ -73,9 +106,12 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         notifyDataSetChanged();
     }
 
+    public List<Restaurant> getRestaurantList() {
+        return restaurantList;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView restName, restAddress, restWorkingTime, restaurantAreaTxt;
+        TextView restName, restAddress, restWorkingTime, restaurantAreaTxt, restaurantOpenStatus;
         ImageView restImageView;
         CardView restItemCardView;
 
@@ -87,6 +123,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             restaurantAreaTxt = itemView.findViewById(R.id.restaurantAreaTxt);
             restImageView = itemView.findViewById(R.id.restImageView);
             restItemCardView = itemView.findViewById(R.id.restItemCardView);
+            restaurantOpenStatus = itemView.findViewById(R.id.restaurantOpenOrClose);
         }
     }
 

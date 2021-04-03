@@ -262,7 +262,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            String dayText = dayOfMonth == todayDate ? "Today," : dayOfMonth < todayDate ? "Yesterday," : "";
+            String dayText = dayOfMonth == todayDate ? "Today," :"";
             String monthDisplayTxt = UiUtils.getMonthName(month + 1);
             String chooseDate = String.format(Locale.getDefault(), "%s %d %s", dayText, dayOfMonth, monthDisplayTxt);
             dateReserveTxtView.setText(chooseDate);

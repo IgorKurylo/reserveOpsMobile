@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_restaurant" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_reservation"
         android:name="com.ops.ui.fragments.ReservationFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="@string/title_reservation"
+        tools:layout="@layout/fragment_reservation" />
 </navigation>

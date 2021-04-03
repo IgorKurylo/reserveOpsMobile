@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     tools:context=".ui.fragments.ReservationFragment">
     <LinearLayout
         android:id="@+id/calendarLayout"
@@ -28,8 +29,8 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:id="@+id/historyOrders"
-        android:text="@string/historyOrders"
+        android:id="@+id/reservationLbl"
+        android:text="@string/myReservation"
         android:textSize="@dimen/textDefaultSize"
         android:textStyle="bold"
         android:padding="10dp"
@@ -41,7 +42,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lastOrdersRv"
-        android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/historyOrders"/>
+        android:id="@+id/reservationRv"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/reservationLbl"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.ops.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ import com.ops.utils.Constant;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,15 +45,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RestaurantFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, RestaurantRecyclerViewAdapter.OnChooseRestaurantListener {
+public class RestaurantFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, RestaurantRecyclerViewAdapter.OnChooseRestaurantListener {
 
-    Button searchBtn;
+    Button clearBtn;
     EditText searchEditText;
     ChipGroup restaurantAreaChipsGroup;
     RecyclerView restaurantRv;
     RestaurantRecyclerViewAdapter recyclerViewAdapter;
     List<Area> filters;
     Context mContext;
+    private List<Restaurant> originList;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,17 +67,51 @@ public class RestaurantFragment extends Fragment implements CompoundButton.OnChe
         View view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         filters = new ArrayList<>();
         searchEditText = view.findViewById(R.id.searchEditTxt);
-        searchBtn = view.findViewById(R.id.searchBtn);
+        clearBtn = view.findViewById(R.id.clearBtn);
         restaurantAreaChipsGroup = view.findViewById(R.id.filterResAreas);
         restaurantRv = view.findViewById(R.id.rvRestaurant);
         restaurantRv.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerViewAdapter = new RestaurantRecyclerViewAdapter(new ArrayList<>(), view.getContext());
         recyclerViewAdapter.setListener(this);
+        clearBtn.setOnClickListener(this);
         restaurantRv.setAdapter(recyclerViewAdapter);
         RestaurantArea[] areas = RestaurantArea.values();
         initChipGroup(areas);
         getRestaurants();
+        searchRestaurant();
         return view;
+    }
+
+    private void searchRestaurant() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() >= 3) {
+                    originList = new ArrayList<>(recyclerViewAdapter.getRestaurantList());
+                    List<Restaurant> newList = new ArrayList<>();
+                    for (Restaurant restaurant : recyclerViewAdapter.getRestaurantList()) {
+                        if (restaurant.getRestaurantName().contains(s)) {
+                            newList.add(restaurant);
+                        }
+                    }
+                    recyclerViewAdapter.updateRestaurants(newList);
+                } else {
+                    if (s.length() == 0) {
+                        recyclerViewAdapter.updateRestaurants(originList);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void getRestaurants() {
@@ -120,12 +158,21 @@ public class RestaurantFragment extends Fragment implements CompoundButton.OnChe
                 filters.add(new Area(area.name()));
             } else {
                 buttonView.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-                filters.remove(new Area(area.name()));
+                removeFromFilter(area);
             }
             getRestaurants();
         }
 
 
+    }
+
+    private void removeFromFilter(RestaurantArea area) {
+        Iterator<Area> iterator = this.filters.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getName().equals(area.name())) {
+                iterator.remove();
+            }
+        }
     }
 
     @Override
@@ -134,5 +181,13 @@ public class RestaurantFragment extends Fragment implements CompoundButton.OnChe
         intent.putExtra(Constant.RESTAURANT_KEY, restaurant);
         mContext.startActivity(intent);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.clearBtn) {
+            recyclerViewAdapter.updateRestaurants(originList);
+            searchEditText.setText("");
+        }
     }
 }

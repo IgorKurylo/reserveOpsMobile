@@ -32,8 +32,8 @@ public class UiUtils {
         int todayDate = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH) + 1;
         String monthName = UiUtils.getMonthName(month);
-        String currentDate = String.format(Locale.getDefault(), "%d, %s %s",
-                todayDate, monthName, "Today");
+        String currentDate = String.format(Locale.getDefault(), "%s %d %s",
+                "Today,", todayDate, monthName);
         dateTextView.setText(currentDate);
         return todayDate;
     }

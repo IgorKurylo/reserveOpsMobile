@@ -8,13 +8,14 @@ public class BaseResponse<T> {
     private T data;
     @SerializedName("isSuccess")
     private boolean isSuccess;
-    @SerializedName("error")
-    private String error;
+    @SerializedName("message")
+    private String message;
 
-    public BaseResponse(T data, boolean isSuccess, String error) {
+
+    public BaseResponse(T data, boolean isSuccess, String message) {
         this.data = data;
         this.isSuccess = isSuccess;
-        this.error = error;
+        this.message = message;
     }
 
     public Object getData() {
@@ -33,11 +34,11 @@ public class BaseResponse<T> {
         isSuccess = success;
     }
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

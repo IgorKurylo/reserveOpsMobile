@@ -19,9 +19,6 @@ public interface IReserveService {
     @POST("reserve")
     Call<BaseResponse<ReserveResponse>> createReserve(@Body RequestReserve request);
 
-    @GET("reserve/next")
-    Call<BaseResponse<ReserveResponse>> upComingReserve();
-
     @GET("reserve")
     Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date);
 

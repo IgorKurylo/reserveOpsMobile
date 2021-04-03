@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Reserve Ops</string>
-    <string name="searchRest">Search</string>
+    <string name="clearRest">Search</string>
     <string name="searchRestHint">Search Restaurant</string>
     <string name="openAtRest">Open at %s-%s</string>
     <string name="baseUrl">http://10.0.2.2:8080/app/api/</string>
     <string name="title_activity_navigation">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_restaurant">Restaurant</string>
-    <string name="title_notifications">Reservation</string>
+    <string name="title_reservation">Reservation</string>
     <string name="welcomeText">Welcome,%1$s</string>
     <string name="userLastReserve">Your Reserves</string>
     <string name="visitsOnRestaurant">Your Visits</string>
@@ -18,7 +18,7 @@
     <string name="webSite">View\nwebsite</string>
     <string name="goToMaps">Show\non map</string>
     <string name="upcomingOrders">Upcoming Reservation</string>
-    <string name="historyOrders">My Reservations</string>
+    <string name="myReservation">My Reservations</string>
     <string name="dateLabel">Date</string>
     <string name="guestLabel">Guests</string>
     <string name="timeLabel">Time</string>
@@ -41,4 +41,6 @@
     <string name="registerCompleted">Register Completed!</string>
     <string name="errorRegister">Error on registration,Try again</string>
     <string name="shared_preference_file_key">cache_ops</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
