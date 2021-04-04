@@ -11,6 +11,8 @@ public class Constant {
     public static final String ROLE = "role";
     public static final String FIRST_NAME = "first_name";
     public static final String AVATAR = "avatar";
+    public static final String RESERVE = "reserve";
+    public static final String LAST_NAME = "last_name";
 
     public static String RESTAURANT_KEY = "restaurant";
 }

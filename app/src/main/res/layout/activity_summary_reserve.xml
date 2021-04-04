@@ -98,7 +98,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/reserveBtn"
+        android:id="@+id/okBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="@string/reservationCompleteOK"

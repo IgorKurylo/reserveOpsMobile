@@ -2,7 +2,9 @@ package com.ops.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Reserve {
+import java.io.Serializable;
+
+public class Reserve implements Serializable {
 
     @SerializedName("Id")
     private int Id;

@@ -214,8 +214,9 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         service.createReserve(new RequestReserve(reserve)).enqueue(new Callback<BaseResponse<ReserveResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Response<BaseResponse<ReserveResponse>> response) {
-                if (response.body() != null) {
-
+                if (response.body() != null && response.body().isSuccess()) {
+                    ReserveResponse reserveResponse = (ReserveResponse) response.body().getData();
+                    startReserveSummary(reserveResponse.getReserve());
                 }
             }
 
@@ -224,6 +225,13 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
                 Log.e(TAG, t.toString());
             }
         });
+    }
+
+    private void startReserveSummary(Reserve reserve) {
+        Intent intent = new Intent(getApplicationContext(), SummaryReserveActivity.class);
+        intent.putExtra(Constant.RESERVE, reserve);
+        startActivity(intent);
+
     }
 
     /**
@@ -262,7 +270,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            String dayText = dayOfMonth == todayDate ? "Today," :"";
+            String dayText = dayOfMonth == todayDate ? "Today," : "";
             String monthDisplayTxt = UiUtils.getMonthName(month + 1);
             String chooseDate = String.format(Locale.getDefault(), "%s %d %s", dayText, dayOfMonth, monthDisplayTxt);
             dateReserveTxtView.setText(chooseDate);

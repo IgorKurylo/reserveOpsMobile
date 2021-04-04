@@ -25,7 +25,7 @@ public class UiUtils {
 
     public static String getMonthName(int month) {
         Month m = Month.of(month);
-        return m.getDisplayName(TextStyle.SHORT, Locale.getDefault());
+        return m.getDisplayName(TextStyle.FULL, Locale.getDefault());
     }
 
     public static int initDateTextView(Calendar calendar, TextView dateTextView) {
