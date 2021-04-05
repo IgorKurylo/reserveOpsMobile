@@ -5,7 +5,7 @@ import com.ops.models.Reserve;
 
 public class RequestReserve {
 
-    @SerializedName("Reserve")
+    @SerializedName("reserve")
     private Reserve reserve;
 
     public RequestReserve(Reserve reserve) {

@@ -1,16 +1,15 @@
 package com.ops.ui.fragments;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.ops.R;
@@ -25,12 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Month;
-import java.time.format.TextStyle;
-import java.util.Calendar;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -40,8 +34,9 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     ImageView userAvatar;
-    TextView reservationCountTxt, dateUpcomingReserveTxt, timeUpcomingReserveTxt, restaurantNameUpcomingReserveTxt, guestNumberUpcomingReserve, lastRestaurantTxt;
+    TextView reservationCountTxt, upComingReserve, dateUpcomingReserveTxt, timeUpcomingReserveTxt, restaurantNameUpcomingReserveTxt, guestNumberUpcomingReserve, lastRestaurantTxt;
     View view;
+    CardView upComingReserveCard;
     final String TAG = HomeFragment.class.getName();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,6 +49,8 @@ public class HomeFragment extends Fragment {
         timeUpcomingReserveTxt = view.findViewById(R.id.timeUpcomingReserveTxt);
         restaurantNameUpcomingReserveTxt = view.findViewById(R.id.restaurantNameUpcomingReserveTxt);
         guestNumberUpcomingReserve = view.findViewById(R.id.guestNumberUpcomingReserve);
+        upComingReserve = view.findViewById(R.id.upComingOrders);
+        upComingReserveCard = view.findViewById(R.id.upComingOrderCard);
         TextView welcomeTxt = view.findViewById(R.id.welcomeText);
         loadUserDetails(welcomeTxt);
         loadStatistics();
@@ -93,14 +90,22 @@ public class HomeFragment extends Fragment {
         reservationCountTxt.setText(String.valueOf(result.getNumberOfReservation()));
         lastRestaurantTxt.setText(result.getRestaurant().getRestaurantName());
         // set upcoming reserve
-        timeUpcomingReserveTxt.setText(result.getReserve().getTime());
-        try {
-            dateUpcomingReserveTxt.setText(UiUtils.formatDate(result.getReserve().getDate()));
-        } catch (ParseException e) {
-            Log.e(TAG, e.toString());
+        if (result.getReserve() != null) {
+            upComingReserveCard.setVisibility(View.VISIBLE);
+            upComingReserve.setTextColor(view.getContext().getColor(R.color.lightGrey));
+            timeUpcomingReserveTxt.setText(result.getReserve().getTime());
+            try {
+                dateUpcomingReserveTxt.setText(UiUtils.formatDate(result.getReserve().getDate()));
+            } catch (ParseException e) {
+                Log.e(TAG, e.toString());
+            }
+            restaurantNameUpcomingReserveTxt.setText(result.getReserve().getRestaurant().getRestaurantName());
+            guestNumberUpcomingReserve.setText(String.format(Locale.getDefault(), "%d %s", result.getReserve().getGuestsNumber(), view.getContext().getString(R.string.guestLabel)));
+        } else {
+            upComingReserveCard.setVisibility(View.GONE);
+            upComingReserve.setText(getString(R.string.noUpComingReserve));
+            upComingReserve.setTextColor(view.getContext().getColor(R.color.colorSecondPrimary));
         }
-        restaurantNameUpcomingReserveTxt.setText(result.getReserve().getRestaurant().getRestaurantName());
-        guestNumberUpcomingReserve.setText(String.format(Locale.getDefault(), "%d %s", result.getReserve().getGuestsNumber(), view.getContext().getString(R.string.guestLabel)));
     }
 
 }

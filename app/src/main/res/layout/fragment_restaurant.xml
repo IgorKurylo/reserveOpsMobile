@@ -18,14 +18,14 @@
             android:id="@+id/searchEditTxt"
             android:layout_width="280dp"
             android:layout_height="50dp"
-            android:fontFamily="@font/exo_regular"
-            android:drawablePadding="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:inputType="text"
             android:background="@drawable/custom_edit_text"
             android:drawableEnd="@drawable/ic_search"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/exo_regular"
             android:hint="@string/searchRestHint"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:fontFamily="@font/exo_regular"
             android:background="@color/colorSecondPrimary"
+            android:fontFamily="@font/exo_regular"
             android:text="@string/clearRest"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,9 +45,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <HorizontalScrollView
+        android:id="@+id/chipsGroupLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/chipsGroupLayout"
         android:layout_margin="10dp"
         app:layout_constraintTop_toBottomOf="@+id/searchLayout">
 
@@ -55,14 +55,16 @@
             android:id="@+id/filterResAreas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="true">
-        </com.google.android.material.chip.ChipGroup>
+            app:singleLine="true" />
     </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipsGroupLayout"
-        android:layout_margin="10dp"
         android:id="@+id/rvRestaurant"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@+id/chipsGroupLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

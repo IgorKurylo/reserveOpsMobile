@@ -214,9 +214,13 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         service.createReserve(new RequestReserve(reserve)).enqueue(new Callback<BaseResponse<ReserveResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Response<BaseResponse<ReserveResponse>> response) {
-                if (response.body() != null && response.body().isSuccess()) {
-                    ReserveResponse reserveResponse = (ReserveResponse) response.body().getData();
-                    startReserveSummary(reserveResponse.getReserve());
+                if (response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        ReserveResponse reserveResponse = (ReserveResponse) response.body().getData();
+                        startReserveSummary(reserveResponse.getReserve());
+                    } else {
+                        //TODO: show the error from the server
+                    }
                 }
             }
 

@@ -46,5 +46,6 @@
     <string name="shared_preference_file_key">cache_ops</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="noUpComingReserve">No Upcoming Reservation</string>
 
 </resources>
