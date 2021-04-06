@@ -131,6 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         CacheManager.getInstance().setString(Constant.ACCESS_TOKEN, token.getAccessToken());
                         CacheManager.getInstance().setString(Constant.ROLE, token.getRole());
                         CacheManager.getInstance().setString(Constant.FIRST_NAME, token.getUser().getFirstName());
+                        CacheManager.getInstance().setString(Constant.LAST_NAME, token.getUser().getLastName());
                         if (CacheManager.getInstance().getString(Constant.AVATAR).isEmpty()) {
                             CacheManager.getInstance().setString(Constant.AVATAR, UiUtils.randomAvatar(getApplicationContext()));
                         }
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), response.body().getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -148,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e(TAG, t.toString());
                 progressBarLogin.setVisibility(View.INVISIBLE);
                 logInBtn.setEnabled(true);
+                Toast.makeText(getApplicationContext(), getString(R.string.loginRegister), Toast.LENGTH_LONG).show();
             }
         });
     }

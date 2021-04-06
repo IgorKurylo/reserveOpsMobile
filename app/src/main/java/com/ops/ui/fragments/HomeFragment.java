@@ -90,9 +90,9 @@ public class HomeFragment extends Fragment {
         reservationCountTxt.setText(String.valueOf(result.getNumberOfReservation()));
         lastRestaurantTxt.setText(result.getRestaurant().getRestaurantName());
         // set upcoming reserve
-        if (result.getReserve() != null) {
+        if (result.getReserve().getDate() != null && result.getReserve().getTime()!=null ) {
             upComingReserveCard.setVisibility(View.VISIBLE);
-            upComingReserve.setTextColor(view.getContext().getColor(R.color.lightGrey));
+            upComingReserve.setTextColor(view.getContext().getColor(R.color.grey));
             timeUpcomingReserveTxt.setText(result.getReserve().getTime());
             try {
                 dateUpcomingReserveTxt.setText(UiUtils.formatDate(result.getReserve().getDate()));

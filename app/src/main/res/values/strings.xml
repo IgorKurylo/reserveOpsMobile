@@ -43,6 +43,8 @@
     <string name="registerTitle">Register</string>
     <string name="registerCompleted">Register Completed!</string>
     <string name="errorRegister">Error on registration,Try again</string>
+    <string name="loginRegister">Error on login,Try again</string>
+
     <string name="shared_preference_file_key">cache_ops</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

@@ -73,6 +73,8 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         }
         todayDate = UiUtils.initDateTextView(calendar, dateReserveTxtView);
         reserveGuestTxtView.setText(String.valueOf(MIN_GUESTS_NUMBER));
+        SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
+        reserveDate = sdf.format(calendar.getTime());
     }
 
     /**
@@ -235,6 +237,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(getApplicationContext(), SummaryReserveActivity.class);
         intent.putExtra(Constant.RESERVE, reserve);
         startActivity(intent);
+        finish();
 
     }
 

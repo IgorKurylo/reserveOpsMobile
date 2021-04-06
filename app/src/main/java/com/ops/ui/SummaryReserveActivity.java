@@ -35,7 +35,8 @@ public class SummaryReserveActivity extends AppCompatActivity {
             Reserve reserve = (Reserve) intent.getSerializableExtra(Constant.RESERVE);
             try {
                 reserveInfoFirst.setText(String.format("%s,%s", UiUtils.formatDate(reserve.getDate()), reserve.getTime()));
-                reserveInfoSecond.setText(String.format(Locale.getDefault(), "%d Guests,'%s'", reserve.getGuestsNumber(), reserve.getWishes()));
+                reserveInfoSecond.setText(String.format(Locale.getDefault(), "%d Guests '%s'",
+                        reserve.getGuestsNumber(), reserve.getWishes() == null ? "" : reserve.getWishes()));
                 userFullNameInfo.setText(String.format("%s %s",
                         CacheManager.getInstance().getString(Constant.FIRST_NAME), CacheManager.getInstance().getString(Constant.LAST_NAME)));
             } catch (ParseException e) {
@@ -47,6 +48,7 @@ public class SummaryReserveActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent in = new Intent(getApplicationContext(), NavigationActivity.class);
                 startActivity(in);
+                finish();
             }
         });
 
