@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReserveOpsMobile">
-        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.AdminActivity"></activity>
+        <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SummaryReserveActivity" />
         <activity
             android:name=".ui.ReserveActivity"
@@ -30,6 +31,7 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

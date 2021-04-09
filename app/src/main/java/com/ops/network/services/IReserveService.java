@@ -20,7 +20,7 @@ public interface IReserveService {
     Call<BaseResponse<ReserveResponse>> createReserve(@Body RequestReserve request);
 
     @GET("reserve")
-    Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date);
+    Call<BaseResponse<ReservesResponse>> reserves();
 
     @GET("reserve/availableTimes")
     Call<BaseResponse<TimeAvailabilityResponse>> availableTimes(@Query("restaurantId") int restaurantId,

@@ -96,7 +96,7 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
 
     private void loadReservation(String date) {
         IReserveService service = NetworkApi.getInstance().getRetrofit().create(IReserveService.class);
-        service.reserves(date).enqueue(new Callback<BaseResponse<ReservesResponse>>() {
+        service.reserves().enqueue(new Callback<BaseResponse<ReservesResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<ReservesResponse>> call, @NotNull Response<BaseResponse<ReservesResponse>> response) {
                 if (response.body() != null && response.body().isSuccess()) {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -94,6 +95,10 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             holder.restaurantOpenStatus.setTextColor(mContext.getColor(R.color.colorPrimary));
         }
 
+    }
+
+    private boolean restaurantStatus(int start, int end, int now) {
+        return start <= now && now <= end;
     }
 
     @Override

@@ -49,5 +49,9 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="noUpComingReserve">No Upcoming Reservation</string>
+    <string name="restaurantClose">Restaurant is close, working hour is %1$s - %2$s</string>
+    <string name="reserveAlert">Can\'t make reservation on %1$s</string>
+    <string name="pendingReservation">Pending Reservation</string>
+    <string name="todayReservation">Today Reservation</string>
 
 </resources>

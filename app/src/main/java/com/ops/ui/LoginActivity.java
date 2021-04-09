@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ops.R;
 import com.ops.models.AccessToken;
 import com.ops.models.AuthCredentials;
+import com.ops.models.Role;
 import com.ops.models.User;
 import com.ops.models.response.BaseResponse;
 import com.ops.network.NetworkApi;
@@ -135,9 +136,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (CacheManager.getInstance().getString(Constant.AVATAR).isEmpty()) {
                             CacheManager.getInstance().setString(Constant.AVATAR, UiUtils.randomAvatar(getApplicationContext()));
                         }
-                        Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (Role.valueOf(token.getRole()) == Role.SimpleUser) {
+                            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else if (Role.valueOf(token.getRole()) == Role.Admin) {
+                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }

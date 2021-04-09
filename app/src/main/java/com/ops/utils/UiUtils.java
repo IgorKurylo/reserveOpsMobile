@@ -38,6 +38,23 @@ public class UiUtils {
         return todayDate;
     }
 
+    public static int getDateNumber(String date) {
+        int dateNumber = -1;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
+
+            Date dInstance = sdf.parse(date);
+            if (dInstance != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dInstance);
+                dateNumber = calendar.get(Calendar.DAY_OF_MONTH);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateNumber;
+    }
+
     public static Date convertTimeFromString(String time) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(Constant.TIME_FORMAT, Locale.getDefault());
         return formatter.parse(time);

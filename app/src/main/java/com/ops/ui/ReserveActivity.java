@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ops.R;
 import com.ops.adapters.TimeRecyclerViewAdapter;
@@ -52,12 +54,14 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout downGuestLayout, upGuestLayout, datePickerLayout;
     EditText wishesEditText;
     Button reserveBtn;
+    ProgressBar progressBar;
     RecyclerView timePickerRecyclerView;
     final Calendar calendar = Calendar.getInstance();
     int todayDate, restaurantId;
     String reserveDate, startTime, endTime, reserveTime;
     TimeRecyclerViewAdapter timeRecyclerViewAdapter;
     IReserveService service;
+    private int endHour, startHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         reserveBtn = findViewById(R.id.reserveBtn);
         timePickerRecyclerView = findViewById(R.id.timeRv);
         timeLabel = findViewById(R.id.labelTime);
+        progressBar = findViewById(R.id.progressBar);
         datePickerLayout.setOnClickListener(this);
         upGuestLayout.setOnClickListener(this);
         downGuestLayout.setOnClickListener(this);
@@ -142,8 +147,8 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
             java.util.Date endTime = UiUtils.convertTimeFromString(end);
             c1.setTime(startTime);
             c2.setTime(endTime);
-            int startHour = c1.get(Calendar.HOUR_OF_DAY);
-            int endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? Constant.MIDNIGHT : c2.get(Calendar.HOUR_OF_DAY);
+            startHour = c1.get(Calendar.HOUR_OF_DAY);
+            endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? Constant.MIDNIGHT : c2.get(Calendar.HOUR_OF_DAY);
             while (startHour < endHour) {
                 list.add(new AvailableTime(startHour < 10 ?
                         String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
@@ -201,8 +206,14 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
                 datePickerDialog.show();
                 break;
             case R.id.reserveBtn:
-                Reserve reserve = new Reserve(reserveDate, reserveTime, new Restaurant(restaurantId), Integer.parseInt(reserveGuestTxtView.getText().toString()), wishesEditText.getText().toString());
-                createReserve(reserve);
+                int reserveDateNumber = UiUtils.getDateNumber(reserveDate);
+                if ((reserveDateNumber != todayDate && calendar.get(Calendar.HOUR_OF_DAY) < endHour) ||
+                        (reserveDateNumber == todayDate && calendar.get(Calendar.HOUR_OF_DAY) < endHour)) {
+                    Reserve reserve = new Reserve(reserveDate, reserveTime, new Restaurant(restaurantId), Integer.parseInt(reserveGuestTxtView.getText().toString()), wishesEditText.getText().toString());
+                    createReserve(reserve);
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.reserveAlert, reserveTime), Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -213,15 +224,19 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
      * @param reserve
      */
     private void createReserve(Reserve reserve) {
+        progressBar.setVisibility(View.VISIBLE);
+        reserveBtn.setEnabled(false);
         service.createReserve(new RequestReserve(reserve)).enqueue(new Callback<BaseResponse<ReserveResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Response<BaseResponse<ReserveResponse>> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                reserveBtn.setEnabled(true);
                 if (response.body() != null) {
                     if (response.body().isSuccess()) {
                         ReserveResponse reserveResponse = (ReserveResponse) response.body().getData();
                         startReserveSummary(reserveResponse.getReserve());
                     } else {
-                        //TODO: show the error from the server
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -229,6 +244,8 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onFailure(@NotNull Call<BaseResponse<ReserveResponse>> call, @NotNull Throwable t) {
                 Log.e(TAG, t.toString());
+                progressBar.setVisibility(View.INVISIBLE);
+                reserveBtn.setEnabled(true);
             }
         });
     }
