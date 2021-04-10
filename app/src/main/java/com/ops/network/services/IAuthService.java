@@ -16,4 +16,6 @@ public interface IAuthService {
     @POST("auth/register")
     Call<BaseResponse<User>> register(@Body User user);
 
+
+
 }

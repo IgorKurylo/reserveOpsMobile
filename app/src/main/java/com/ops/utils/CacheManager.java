@@ -11,6 +11,7 @@ public class CacheManager {
     private Context mContext;
     private static SharedPreferences cache;
     private static SharedPreferences.Editor editor;
+
     public static CacheManager getInstance() {
         if (instance == null) {
             instance = new CacheManager();
@@ -22,14 +23,18 @@ public class CacheManager {
         mContext = context;
         cache = context.getSharedPreferences(context.getResources().getString(R.string.shared_preference_file_key), Context.MODE_PRIVATE);
     }
-    public  void setString(String key, String value) {
+
+    public void setString(String key, String value) {
         editor = cache.edit();
         editor.putString(key, value);
         editor.apply();
     }
-    public  String getString(String key) {
+
+    public String getString(String key) {
         return cache.getString(key, "");
     }
+
+
     public void clean() {
         editor = cache.edit();
         editor.clear();

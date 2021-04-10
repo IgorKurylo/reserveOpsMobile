@@ -1,13 +1,24 @@
 package com.ops.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Pair;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ops.R;
+import com.ops.adapters.ReservationStatisticsRecyclerViewAdapter;
+import com.ops.models.ReservationWeekStatistics;
+import com.ops.models.Restaurant;
+import com.ops.models.response.AdminMetaDataResponse;
+import com.ops.models.response.AdminStatisticsResponse;
+import com.ops.models.response.BaseResponse;
+import com.ops.network.NetworkApi;
+import com.ops.network.services.IStatisticsService;
+import com.ops.network.services.IUserService;
 import com.ops.utils.CacheManager;
 import com.ops.utils.Constant;
 import com.squareup.picasso.Picasso;
@@ -15,24 +26,114 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class AdminActivity extends AppCompatActivity {
+    TextView welcomeText, reservationCountTxt, pendingReservation, restName;
+    ImageView userAvatar, restImage;
+    RecyclerView recyclerviewWeekStats;
+    private ReservationStatisticsRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        findViews();
+        initWelcomeLayout(welcomeText, userAvatar);
+        initWeekStatsAdapter(recyclerviewWeekStats);
+        IStatisticsService service = NetworkApi.getInstance().getRetrofit().create(IStatisticsService.class);
+        IUserService userService = NetworkApi.getInstance().getRetrofit().create(IUserService.class);
+        userService.metaData().flatMap(new Function<BaseResponse<AdminMetaDataResponse>, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(BaseResponse<AdminMetaDataResponse> metadataResponse) throws Throwable {
 
-        TextView welcomeText = findViewById(R.id.welcomeText);
-        ImageView userAvatar = findViewById(R.id.userAvatar);
-        TextView reservationCountTxt=findViewById(R.id.reservationCountTxt);
-        TextView pendingReservation=findViewById(R.id.pendingReservation);
+                AdminMetaDataResponse response = (AdminMetaDataResponse) metadataResponse.getData();
+                updateRestaurantUI(response.getRestaurant());
+                return service.adminStatistics(response.getRestaurant().getId());
+
+
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object o) {
+                        try {
+                            BaseResponse<AdminStatisticsResponse> response = (BaseResponse<AdminStatisticsResponse>) o;
+                            if (response.isSuccess()) {
+                                AdminStatisticsResponse statisticsResponse = (AdminStatisticsResponse) response.getData();
+                                updateUI(statisticsResponse);
+                            }
+                        } catch (ClassCastException ex) {
+                            Log.e(AdminActivity.class.getName(), ex.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(AdminActivity.class.getName(), e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+                });
+
+    }
+
+    private void updateRestaurantUI(Restaurant restaurant) {
+        restName.setText(restaurant.getRestaurantName());
+        Picasso.get().load(restaurant.getImageUrl())
+                .error(R.drawable.ic_restaurant)
+                .into(restImage);
+    }
+
+    private void updateUI(AdminStatisticsResponse statisticsResponse) {
+        reservationCountTxt.setText(String.valueOf(statisticsResponse.getTodayReservation()));
+        reservationCountTxt.setText(String.valueOf(statisticsResponse.getPendingReservation()));
+        adapter.updateList(statisticsResponse.getReservationWeekList());
+
+    }
+
+    private void findViews() {
+        recyclerviewWeekStats = findViewById(R.id.recyclerviewWeekStats);
+        welcomeText = findViewById(R.id.welcomeText);
+        userAvatar = findViewById(R.id.userAvatar);
+        reservationCountTxt = findViewById(R.id.reservationCountTxt);
+        pendingReservation = findViewById(R.id.pendingReservation);
+        restName = findViewById(R.id.restNameTxt);
+        restImage = findViewById(R.id.restImageView);
+    }
+
+    private void initWelcomeLayout(TextView welcomeText, ImageView userAvatar) {
         String imageUrl = CacheManager.getInstance().getString(Constant.AVATAR);
         Picasso.get().load(imageUrl)
                 .error(R.drawable.ic_user)
                 .into(userAvatar);
         welcomeText.setText(getString(R.string.welcomeText, CacheManager.getInstance().getString(Constant.FIRST_NAME) +
                 " " + CacheManager.getInstance().getString(Constant.LAST_NAME)));
+    }
 
-
+    private void initWeekStatsAdapter(RecyclerView recyclerviewWeekStats) {
+        adapter = new ReservationStatisticsRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
+        recyclerviewWeekStats.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerviewWeekStats.setAdapter(adapter);
     }
 }

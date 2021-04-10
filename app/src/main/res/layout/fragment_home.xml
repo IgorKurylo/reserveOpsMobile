@@ -65,10 +65,10 @@
             android:layout_columnWeight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="5dp"
             app:cardBackgroundColor="@color/green"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="1dp">
+            app:cardCornerRadius="8dp"
+            android:elevation="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -111,10 +111,10 @@
             android:layout_columnWeight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="5dp"
             app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="1dp">
+            app:cardCornerRadius="8dp"
+            android:elevation="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -173,9 +173,10 @@
             android:layout_height="90dp"
             android:id="@+id/upComingOrderCard"
             app:cardBackgroundColor="@color/colorLight"
-            app:cardCornerRadius="2dp"
+            app:cardCornerRadius="8dp"
+            android:elevation="10dp"
             android:layout_marginTop="10dp"
-            app:cardElevation="1dp">
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
@@ -206,33 +207,35 @@
                     android:textSize="@dimen/textDefaultSize"
                     android:textStyle="bold" />
             </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:padding="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/exo_regular"
-                    android:text="Meat Bar"
-                    android:id="@+id/restaurantNameUpcomingReserveTxt"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textDefaultSize" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/exo_regular"
-                    android:text="6 Guests"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/guestNumberUpcomingReserve"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textDefaultSize"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/restaurantNameUpcomingReserveTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/exo_regular"
+                        android:text="Meat Bar"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textDefaultSize" />
+
+                    <TextView
+                        android:id="@+id/guestNumberUpcomingReserve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/exo_regular"
+                        android:text="6 Guests"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textDefaultSize"
+                        android:textStyle="bold" />
+                </RelativeLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

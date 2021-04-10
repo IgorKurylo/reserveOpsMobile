@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
     private void loadStatistics() {
         IStatisticsService service = NetworkApi.getInstance().getRetrofit().create(IStatisticsService.class);
-        service.statistics().enqueue(new Callback<BaseResponse<StatisticsResponse>>() {
+        service.userStatistics().enqueue(new Callback<BaseResponse<StatisticsResponse>>() {
             @Override
             public void onResponse(@NotNull Call<BaseResponse<StatisticsResponse>> call, @NotNull Response<BaseResponse<StatisticsResponse>> response) {
                 if (response.body() != null) {
