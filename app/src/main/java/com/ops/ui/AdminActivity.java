@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ops.R;
 import com.ops.adapters.ReservationStatisticsRecyclerViewAdapter;
 import com.ops.models.ReservationWeekStatistics;
@@ -39,11 +42,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
     TextView welcomeText, reservationCountTxt, pendingReservation, restName;
     ImageView userAvatar, restImage;
     RecyclerView recyclerviewWeekStats;
     private ReservationStatisticsRecyclerViewAdapter adapter;
+    private ImageView openReservationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +58,23 @@ public class AdminActivity extends AppCompatActivity {
         initWeekStatsAdapter(recyclerviewWeekStats);
         IStatisticsService service = NetworkApi.getInstance().getRetrofit().create(IStatisticsService.class);
         IUserService userService = NetworkApi.getInstance().getRetrofit().create(IUserService.class);
-        userService.metaData().flatMap(new Function<BaseResponse<AdminMetaDataResponse>, ObservableSource<?>>() {
-            @Override
-            public ObservableSource<?> apply(BaseResponse<AdminMetaDataResponse> metadataResponse) throws Throwable {
+        getAdminStatistic(service, userService);
 
-                AdminMetaDataResponse response = (AdminMetaDataResponse) metadataResponse.getData();
-                updateRestaurantUI(response.getRestaurant());
-                return service.adminStatistics(response.getRestaurant().getId());
+    }
 
+    private void getAdminStatistic(IStatisticsService service, IUserService userService) {
+        userService.metaData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<BaseResponse<AdminMetaDataResponse>, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(BaseResponse<AdminMetaDataResponse> metadataResponse) throws Throwable {
 
-            }
-        }).subscribeOn(Schedulers.io())
+                        AdminMetaDataResponse response = (AdminMetaDataResponse) metadataResponse.getData();
+                        updateRestaurantUI(response.getRestaurant());
+                        return service.adminStatistics(response.getRestaurant().getId());
+                    }
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override
@@ -82,7 +92,7 @@ public class AdminActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(AdminActivity.class.getName(), e.toString());
+                        Log.e(AdminActivity.class.getName() + "onError", e.toString());
                     }
 
                     @Override
@@ -95,19 +105,20 @@ public class AdminActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     private void updateRestaurantUI(Restaurant restaurant) {
         restName.setText(restaurant.getRestaurantName());
-        Picasso.get().load(restaurant.getImageUrl())
-                .error(R.drawable.ic_restaurant)
+        Glide.with(getApplicationContext())
+                .load(restaurant.getImageUrl())
+                .apply(new RequestOptions().circleCrop())
+                .error(R.drawable.ic_restaurant_white)
                 .into(restImage);
     }
 
     private void updateUI(AdminStatisticsResponse statisticsResponse) {
         reservationCountTxt.setText(String.valueOf(statisticsResponse.getTodayReservation()));
-        reservationCountTxt.setText(String.valueOf(statisticsResponse.getPendingReservation()));
+        pendingReservation.setText(String.valueOf(statisticsResponse.getPendingReservation()));
         adapter.updateList(statisticsResponse.getReservationWeekList());
 
     }
@@ -120,6 +131,8 @@ public class AdminActivity extends AppCompatActivity {
         pendingReservation = findViewById(R.id.pendingReservation);
         restName = findViewById(R.id.restNameTxt);
         restImage = findViewById(R.id.restImageView);
+        openReservationBtn = findViewById(R.id.openReservationBtn);
+        openReservationBtn.setOnClickListener(this);
     }
 
     private void initWelcomeLayout(TextView welcomeText, ImageView userAvatar) {
@@ -135,5 +148,12 @@ public class AdminActivity extends AppCompatActivity {
         adapter = new ReservationStatisticsRecyclerViewAdapter(getApplicationContext(), new ArrayList<>());
         recyclerviewWeekStats.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerviewWeekStats.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.openReservationBtn) {
+
+        }
     }
 }

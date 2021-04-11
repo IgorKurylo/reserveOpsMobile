@@ -53,5 +53,8 @@
     <string name="reserveAlert">Can\'t make reservation on %1$s</string>
     <string name="pendingReservation">Pending Reservation</string>
     <string name="todayReservation">Today Reservation</string>
+    <string name="reservationWeek">Reservation on this week</string>
+    <string name="reservationApprove">Approve</string>
+    <string name="reservationDecline">Decline</string>
 
 </resources>
