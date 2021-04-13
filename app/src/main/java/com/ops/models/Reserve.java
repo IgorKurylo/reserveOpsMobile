@@ -18,6 +18,8 @@ public class Reserve implements Serializable {
     private int guestsNumber;
     @SerializedName("Wishes")
     private String wishes;
+    @SerializedName("Status")
+    private String status;
 
     public Reserve(int id, String date, String time, Restaurant restaurant, int guestsNumber, String wishes) {
         Id = id;
@@ -34,6 +36,11 @@ public class Reserve implements Serializable {
         this.restaurant = restaurant;
         this.guestsNumber = guestsNumber;
         this.wishes = wishes;
+    }
+
+    public Reserve(int id, String status) {
+        this.Id = id;
+        this.status = status;
     }
 
     public int getId() {

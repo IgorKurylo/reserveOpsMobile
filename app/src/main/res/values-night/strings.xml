@@ -50,4 +50,6 @@
     <string name="todayReservation">Today Reservation</string>
     <string name="reservationApprove">Approve</string>
     <string name="reservationDecline">Decline</string>
+    <string name="adminTab">Dashboard</string>
+    <string name="noReservation">No Reservation</string>
 </resources>

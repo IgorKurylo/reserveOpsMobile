@@ -19,6 +19,8 @@
     <string name="goToMaps">Show\non map</string>
     <string name="upcomingOrders">Upcoming Reservation</string>
     <string name="myReservation">My Reservations</string>
+    <string name="adminReservation">Reservations</string>
+
     <string name="dateLabel">Date</string>
     <string name="guestLabel">Guests</string>
     <string name="timeLabel">Time</string>
@@ -56,5 +58,13 @@
     <string name="reservationWeek">Reservation on this week</string>
     <string name="reservationApprove">Approve</string>
     <string name="reservationDecline">Decline</string>
+    <string name="adminTab">Dashboard</string>
+    <array name="tabTitles">
+        <item>Dashboard</item>
+        <item>Reservations</item>
+    </array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="noReservation">No Reservation</string>
 
 </resources>

@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -20,9 +21,12 @@ public interface IReserveService {
     Call<BaseResponse<ReserveResponse>> createReserve(@Body RequestReserve request);
 
     @GET("reserve")
-    Call<BaseResponse<ReservesResponse>> reserves();
+    Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date);
 
     @GET("reserve/availableTimes")
     Call<BaseResponse<TimeAvailabilityResponse>> availableTimes(@Query("restaurantId") int restaurantId,
                                                                 @Query("date") String date);
+
+    @PUT("reserve")
+    Call<BaseResponse<ReserveResponse>> updateReservationStatus(@Body RequestReserve request);
 }

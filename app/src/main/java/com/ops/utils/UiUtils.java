@@ -74,7 +74,7 @@ public class UiUtils {
         if (dInstance != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dInstance);
-            resultDate = String.format(Locale.getDefault(), "%d,%s", calendar.get(Calendar.DAY_OF_MONTH), getMonthName(calendar.get(Calendar.MONTH)));
+            resultDate = String.format(Locale.getDefault(), "%d,%s", calendar.get(Calendar.DAY_OF_MONTH), getMonthName(calendar.get(Calendar.MONTH)+1));
         }
         return resultDate;
 

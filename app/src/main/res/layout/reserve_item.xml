@@ -115,6 +115,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/adminActionLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reservationTimeDate">
 
@@ -130,11 +131,12 @@
                 app:iconTint="@color/green" />
 
             <Button
-                android:id="@+id/declineResrvation"
+                android:id="@+id/declineReservation"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/approveReservation"
+                android:layout_marginEnd="3dp"
                 android:text="@string/reservationDecline"
                 app:icon="@drawable/ic_decline" />
 
