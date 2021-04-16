@@ -203,9 +203,9 @@
             android:gravity="top"
             android:padding="5dp"
             android:textColor="@color/black"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:hint="@string/wishesEditText"
-            android:lines="3" />
+            android:lines="2" />
 
     </LinearLayout>
     <ProgressBar
@@ -217,14 +217,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wishesLayout"
         app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
+        android:id="@+id/reserveBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:id="@+id/reserveBtn"
         android:text="@string/reserveBtnTxt"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

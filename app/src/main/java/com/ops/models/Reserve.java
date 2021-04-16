@@ -6,19 +6,19 @@ import java.io.Serializable;
 
 public class Reserve implements Serializable {
 
-    @SerializedName("Id")
+    @SerializedName("id")
     private int Id;
-    @SerializedName("Date")
+    @SerializedName("date")
     private String date;
-    @SerializedName("Time")
+    @SerializedName("time")
     private String time;
-    @SerializedName("Restaurant")
+    @SerializedName("restaurant")
     private Restaurant restaurant;
-    @SerializedName("Guests")
+    @SerializedName("guests")
     private int guestsNumber;
-    @SerializedName("Wishes")
+    @SerializedName("comment")
     private String wishes;
-    @SerializedName("Status")
+    @SerializedName("status")
     private String status;
 
     public Reserve(int id, String date, String time, Restaurant restaurant, int guestsNumber, String wishes) {
@@ -36,6 +36,16 @@ public class Reserve implements Serializable {
         this.restaurant = restaurant;
         this.guestsNumber = guestsNumber;
         this.wishes = wishes;
+    }
+
+    public Reserve(int id, String date, String time, Restaurant restaurant, int guestsNumber, String wishes, String status) {
+        Id = id;
+        this.date = date;
+        this.time = time;
+        this.restaurant = restaurant;
+        this.guestsNumber = guestsNumber;
+        this.wishes = wishes;
+        this.status = status;
     }
 
     public Reserve(int id, String status) {
@@ -89,5 +99,13 @@ public class Reserve implements Serializable {
 
     public void setWishes(String wishes) {
         this.wishes = wishes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

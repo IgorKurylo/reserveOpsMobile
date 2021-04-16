@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
         Picasso.get().load(imageUrl)
                 .error(R.drawable.ic_user)
                 .into(userAvatar);
-        welcomeTxt.setText(getString(R.string.welcomeText, CacheManager.getInstance().getString(Constant.FIRST_NAME) +" "+ CacheManager.getInstance().getString(Constant.LAST_NAME)));
+        welcomeTxt.setText(getString(R.string.welcomeText, CacheManager.getInstance().getString(Constant.FIRST_NAME) + " " + CacheManager.getInstance().getString(Constant.LAST_NAME)));
     }
 
     private void loadStatistics() {
@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
         // set upcoming reserve
         if (result.getReserve().getDate() != null && result.getReserve().getTime() != null) {
             upComingReserveCard.setVisibility(View.VISIBLE);
-            upComingReserve.setTextColor(view.getContext().getColor(R.color.grey));
+            upComingReserve.setTextColor(view.getContext().getColor(R.color.black));
             timeUpcomingReserveTxt.setText(result.getReserve().getTime());
             try {
                 dateUpcomingReserveTxt.setText(UiUtils.formatDate(result.getReserve().getDate()));

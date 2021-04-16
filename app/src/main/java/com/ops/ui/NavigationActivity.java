@@ -1,5 +1,7 @@
 package com.ops.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,4 +30,21 @@ public class NavigationActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setTitle(getString(R.string.app_name)).setMessage(R.string.message_alert)
+                .setPositiveButton(getString(R.string.positiveAnswer), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                })
+                .setNegativeButton(getString(R.string.negativeAnswer), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+    }
 }

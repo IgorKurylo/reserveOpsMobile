@@ -48,7 +48,7 @@
         android:text="@string/noReservation"
         android:textSize="@dimen/textBigSize"
         android:textStyle="bold"
-        android:visibility="gone"
+        android:visibility="visible"
         android:padding="10dp"
         android:gravity="center"
         android:textColor="@color/colorPrimary"

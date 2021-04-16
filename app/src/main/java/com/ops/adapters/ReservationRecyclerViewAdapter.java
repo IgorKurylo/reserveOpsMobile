@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ops.R;
 import com.ops.models.Reserve;
+import com.ops.models.ReserveStatus;
 import com.ops.models.Role;
 import com.ops.utils.CacheManager;
 import com.ops.utils.Constant;
@@ -67,7 +68,22 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
                 .into(holder.restaurantImage);
         if (Role.valueOf(CacheManager.getInstance().getString(Constant.ROLE)) == Role.SimpleUser) {
             holder.adminActionLayout.setVisibility(View.GONE);
+            holder.reservationStatus.setVisibility(View.GONE);
         } else {
+            if (ReserveStatus.valueOf(reserve.getStatus()) == ReserveStatus.Approved) {
+                holder.adminActionLayout.setVisibility(View.GONE);
+                holder.reservationStatus.setTextColor(mContext.getColor(R.color.green));
+                holder.reservationStatus.setVisibility(View.VISIBLE);
+                holder.reservationStatus.setText(ReserveStatus.Approved.name());
+            } else if (ReserveStatus.valueOf(reserve.getStatus()) == ReserveStatus.Decline) {
+                holder.reservationStatus.setVisibility(View.VISIBLE);
+                holder.adminActionLayout.setVisibility(View.GONE);
+                holder.reservationStatus.setTextColor(mContext.getColor(R.color.colorPrimary));
+                holder.reservationStatus.setText(ReserveStatus.Decline.name());
+            } else {
+                holder.adminActionLayout.setVisibility(View.VISIBLE);
+                holder.reservationStatus.setVisibility(View.GONE);
+            }
             holder.approveReservation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,9 +110,29 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
         notifyDataSetChanged();
     }
 
+    public void setDecline(int reservationId) {
+        for (Reserve reserve : reserveList) {
+            if (reserve.getId() == reservationId) {
+                reserve.setStatus(ReserveStatus.Decline.name());
+                break;
+            }
+        }
+    }
+
+    public void setApproved(int reservationId) {
+        for (Reserve reserve : reserveList) {
+            if (reserve.getId() == reservationId) {
+                reserve.setStatus(ReserveStatus.Approved.name());
+                break;
+            }
+        }
+        notifyDataSetChanged();
+
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView restaurantName, reservationTime, reservationDate, reservationGuests;
+        TextView restaurantName, reservationTime, reservationDate, reservationGuests, reservationStatus;
         ImageView restaurantImage;
         Button approveReservation, declineReservation;
         RelativeLayout adminActionLayout;
@@ -111,6 +147,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
             approveReservation = itemView.findViewById(R.id.approveReservation);
             declineReservation = itemView.findViewById(R.id.declineReservation);
             adminActionLayout = itemView.findViewById(R.id.adminActionLayout);
+            reservationStatus = itemView.findViewById(R.id.reservationStatus);
         }
     }
 

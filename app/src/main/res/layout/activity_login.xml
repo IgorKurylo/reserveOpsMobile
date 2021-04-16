@@ -31,17 +31,7 @@
             android:gravity="center"
             android:fontFamily="@font/exo_regular"
             android:text="@string/loginTitleActivity"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"
-            android:layout_marginTop="10dp"
-            android:textSize="@dimen/textDefaultSize"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:fontFamily="@font/exo_regular"
-            android:text="@string/loginTitleActivity2"/>
+
     </LinearLayout>
 
 

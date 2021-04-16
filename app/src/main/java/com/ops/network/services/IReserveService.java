@@ -21,12 +21,12 @@ public interface IReserveService {
     Call<BaseResponse<ReserveResponse>> createReserve(@Body RequestReserve request);
 
     @GET("reserve")
-    Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date);
+    Call<BaseResponse<ReservesResponse>> reserves(@Query("date") String date, @Query("restaurantId") int restId);
 
     @GET("reserve/availableTimes")
     Call<BaseResponse<TimeAvailabilityResponse>> availableTimes(@Query("restaurantId") int restaurantId,
                                                                 @Query("date") String date);
 
-    @PUT("reserve")
-    Call<BaseResponse<ReserveResponse>> updateReservationStatus(@Body RequestReserve request);
+    @PUT("reserve/{id}")
+    Call<BaseResponse<ReserveResponse>> updateReservationStatus(@Body RequestReserve request, @Path("id") int Id);
 }

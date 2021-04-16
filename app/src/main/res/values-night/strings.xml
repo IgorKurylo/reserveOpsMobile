@@ -52,4 +52,9 @@
     <string name="reservationDecline">Decline</string>
     <string name="adminTab">Dashboard</string>
     <string name="noReservation">No Reservation</string>
+    <string name="adminActivity">Admin Control</string>
+    <string name="errorAction">Something went wrong, try again</string>
+    <string name="message_alert">Do you want to close the app?</string>
+    <string name="positiveAnswer">Yes</string>
+    <string name="negativeAnswer">No</string>
 </resources>

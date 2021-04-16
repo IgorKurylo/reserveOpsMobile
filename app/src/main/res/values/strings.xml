@@ -63,8 +63,12 @@
         <item>Dashboard</item>
         <item>Reservations</item>
     </array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="noReservation">No Reservation</string>
+    <string name="noReservationInWeek">No reservation in this week</string>
+    <string name="adminActivity">Admin Control</string>
+    <string name="errorAction">Something went wrong, try again</string>
+    <string name="message_alert">Do you want to close the app?</string>
+    <string name="positiveAnswer">Yes</string>
+    <string name="negativeAnswer">No</string>
 
 </resources>

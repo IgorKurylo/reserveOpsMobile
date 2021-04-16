@@ -14,15 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/restaurantImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_restaurant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <LinearLayout
             android:id="@+id/restaurantLayout"
@@ -30,10 +22,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/restaurantImage">
-
+            >
+            <ImageView
+                android:id="@+id/restaurantImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_restaurant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <TextView
                 android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
@@ -41,6 +41,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/exo_regular"
                 android:text="Meat Bar"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textBigSize"
                 android:textStyle="bold" />
@@ -51,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/restaurantLayout">
 
@@ -91,7 +92,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/restaurantLayout">
 
@@ -116,7 +117,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/adminActionLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reservationTimeDate">
 
             <Button
@@ -135,11 +135,23 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/approveReservation"
+                android:layout_marginStart="0dp"
                 android:layout_marginEnd="3dp"
+                android:layout_toEndOf="@+id/approveReservation"
                 android:text="@string/reservationDecline"
                 app:icon="@drawable/ic_decline" />
 
         </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/adminActionLayout"
+            android:text="Status"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textDefaultSize"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:id="@+id/reservationStatus"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

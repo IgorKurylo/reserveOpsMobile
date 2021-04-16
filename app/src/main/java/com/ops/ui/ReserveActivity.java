@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.ops.R;
 import com.ops.adapters.TimeRecyclerViewAdapter;
 import com.ops.models.AvailableTime;
@@ -33,7 +34,10 @@ import com.ops.utils.Constant;
 import com.ops.utils.UiUtils;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -235,8 +240,18 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
                     if (response.body().isSuccess()) {
                         ReserveResponse reserveResponse = (ReserveResponse) response.body().getData();
                         startReserveSummary(reserveResponse.getReserve());
-                    } else {
-                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    try {
+                        if (response.errorBody() != null) {
+                            JSONObject object = new JSONObject(response.errorBody().string());
+
+                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }

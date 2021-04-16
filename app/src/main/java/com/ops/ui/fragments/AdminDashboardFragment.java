@@ -23,6 +23,7 @@ import com.ops.models.Restaurant;
 import com.ops.models.response.AdminMetaDataResponse;
 import com.ops.models.response.AdminStatisticsResponse;
 import com.ops.models.response.BaseResponse;
+import com.ops.network.NetworkApi;
 import com.ops.network.services.IStatisticsService;
 import com.ops.network.services.IUserService;
 import com.ops.ui.AdminActivity;
@@ -44,12 +45,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class AdminDashboardFragment extends Fragment implements View.OnClickListener {
 
-    TextView welcomeText, reservationCountTxt, pendingReservation, restName;
+    TextView welcomeText, reservationCountTxt, pendingReservation, restName, reservationWeekTxt;
     ImageView userAvatar, restImage;
     RecyclerView recyclerviewWeekStats;
     private ReservationStatisticsRecyclerViewAdapter adapter;
     private ImageView openReservationBtn;
-    private Context mContext;
+    private AdminActivity mContext;
 
     public AdminDashboardFragment() {
         // Required empty public constructor
@@ -58,7 +59,7 @@ public class AdminDashboardFragment extends Fragment implements View.OnClickList
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mContext = context;
+        mContext = (AdminActivity) context;
     }
 
     public static AdminDashboardFragment newInstance() {
@@ -78,6 +79,9 @@ public class AdminDashboardFragment extends Fragment implements View.OnClickList
         findViews(view);
         initWeekStatsAdapter(recyclerviewWeekStats);
         initWelcomeLayout(welcomeText, userAvatar);
+        IStatisticsService statisticsService = NetworkApi.getInstance().getRetrofit().create(IStatisticsService.class);
+        IUserService userService = NetworkApi.getInstance().getRetrofit().create(IUserService.class);
+        getAdminStatistic(statisticsService, userService);
         return view;
 
     }
@@ -94,12 +98,20 @@ public class AdminDashboardFragment extends Fragment implements View.OnClickList
     private void updateUI(AdminStatisticsResponse statisticsResponse) {
         reservationCountTxt.setText(String.valueOf(statisticsResponse.getTodayReservation()));
         pendingReservation.setText(String.valueOf(statisticsResponse.getPendingReservation()));
-        adapter.updateList(statisticsResponse.getReservationWeekList());
+        if (statisticsResponse.getReservationWeekList().size() > 0) {
+            reservationWeekTxt.setText(mContext.getString(R.string.reservationWeek));
+            reservationWeekTxt.setTextColor(mContext.getColor(R.color.black));
+            adapter.updateList(statisticsResponse.getReservationWeekList());
+        } else {
+            reservationWeekTxt.setText(mContext.getString(R.string.noReservationInWeek));
+            reservationWeekTxt.setTextColor(mContext.getColor(R.color.colorPrimary));
+        }
 
     }
 
     private void findViews(View view) {
         recyclerviewWeekStats = view.findViewById(R.id.recyclerviewWeekStats);
+        reservationWeekTxt = view.findViewById(R.id.reservationWeek);
         welcomeText = view.findViewById(R.id.welcomeText);
         userAvatar = view.findViewById(R.id.userAvatar);
         reservationCountTxt = view.findViewById(R.id.reservationCountTxt);
@@ -120,14 +132,14 @@ public class AdminDashboardFragment extends Fragment implements View.OnClickList
     }
 
     private void initWeekStatsAdapter(RecyclerView recyclerviewWeekStats) {
-        adapter = new ReservationStatisticsRecyclerViewAdapter(mContext, new ArrayList<>());
-        recyclerviewWeekStats.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new ReservationStatisticsRecyclerViewAdapter(mContext.getApplicationContext(), new ArrayList<>());
+        recyclerviewWeekStats.setLayoutManager(new LinearLayoutManager(mContext.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerviewWeekStats.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View v) {
-
+        mContext.showReservationTab();
     }
 
     private void getAdminStatistic(IStatisticsService service, IUserService userService) {
