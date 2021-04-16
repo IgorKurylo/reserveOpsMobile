@@ -68,7 +68,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
                 .into(holder.restaurantImage);
         if (Role.valueOf(CacheManager.getInstance().getString(Constant.ROLE)) == Role.SimpleUser) {
             holder.adminActionLayout.setVisibility(View.GONE);
-            holder.reservationStatus.setVisibility(View.GONE);
+            holder.reservationStatus.setText(reserve.getStatus());
         } else {
             if (ReserveStatus.valueOf(reserve.getStatus()) == ReserveStatus.Approved) {
                 holder.adminActionLayout.setVisibility(View.GONE);
@@ -117,6 +117,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
                 break;
             }
         }
+        notifyDataSetChanged();
     }
 
     public void setApproved(int reservationId) {
