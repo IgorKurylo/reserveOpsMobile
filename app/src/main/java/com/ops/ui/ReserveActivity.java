@@ -154,11 +154,9 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
             c2.setTime(endTime);
             startHour = c1.get(Calendar.HOUR_OF_DAY);
             endHour = c2.get(Calendar.HOUR_OF_DAY) == 0 ? Constant.MIDNIGHT : c2.get(Calendar.HOUR_OF_DAY);
+            reserveTime = generateTime(startHour);
             while (startHour < endHour) {
-                list.add(new AvailableTime(startHour < 10 ?
-                        String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
-                        : String.format(Locale.getDefault(), "%d:00", startHour)
-                        , true));
+                list.add(new AvailableTime(generateTime(startHour), true));
                 startHour++;
             }
             if (endHour == 24) {
@@ -170,6 +168,13 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private String generateTime(int startHour) {
+        return startHour < 10 ?
+                String.format(Locale.getDefault(), "%d%d:00", 0, startHour)
+                : String.format(Locale.getDefault(), "%d:00", startHour);
+
     }
 
 
@@ -242,17 +247,20 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
                         startReserveSummary(reserveResponse.getReserve());
                     }
                 } else {
-                    try {
-                        if (response.errorBody() != null) {
-                            JSONObject object = new JSONObject(response.errorBody().string());
 
-                            Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+                    if (response.errorBody() != null) {
+                        JSONObject object = null;
+                        try {
+                            object = new JSONObject(response.errorBody().string());
+                            String message = object.getString("message");
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+
                 }
             }
 

@@ -75,6 +75,7 @@ public class RestaurantFragment extends Fragment implements View.OnClickListener
         recyclerViewAdapter.setListener(this);
         clearBtn.setOnClickListener(this);
         restaurantRv.setAdapter(recyclerViewAdapter);
+        originList = new ArrayList<>();
         RestaurantArea[] areas = RestaurantArea.values();
         initChipGroup(areas);
         getRestaurants();
@@ -92,10 +93,9 @@ public class RestaurantFragment extends Fragment implements View.OnClickListener
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() >= 3) {
-                    originList = new ArrayList<>(recyclerViewAdapter.getRestaurantList());
                     List<Restaurant> newList = new ArrayList<>();
                     for (Restaurant restaurant : recyclerViewAdapter.getRestaurantList()) {
-                        if (restaurant.getRestaurantName().contains(s)) {
+                        if (restaurant.getRestaurantName().toLowerCase().contains(s.toString().toLowerCase())) {
                             newList.add(restaurant);
                         }
                     }
@@ -123,6 +123,7 @@ public class RestaurantFragment extends Fragment implements View.OnClickListener
                     RestaurantResponse restaurantResponse = (RestaurantResponse) response.body().getData();
                     if (restaurantResponse.getRestaurantList() != null) {
                         recyclerViewAdapter.updateRestaurants(restaurantResponse.getRestaurantList());
+                        originList = new ArrayList<>(restaurantResponse.getRestaurantList());
                     }
                 }
             }
